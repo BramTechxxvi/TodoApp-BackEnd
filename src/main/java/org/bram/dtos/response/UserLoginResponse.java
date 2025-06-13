@@ -1,13 +1,13 @@
-package org.bram.dtos.requests;
+package org.bram.dtos.response;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 @Data
-public class RegisterUserRequest {
+public class UserLoginResponse {
 
     @Id
     private String id;
     private String username;
-    private String password;
+    private String message;
 }

@@ -1,8 +1,10 @@
 package org.bram.services;
 
 import org.bram.data.repositories.UserRepository;
-import org.bram.dtos.requests.RegisterUserRequest;
-import org.bram.dtos.response.RegisterUserResponse;
+import org.bram.dtos.requests.UserLoginRequest;
+import org.bram.dtos.requests.UserRegisterRequest;
+import org.bram.dtos.response.UserLoginResponse;
+import org.bram.dtos.response.UserRegisterResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,30 +21,42 @@ class UserServicesImplTest {
     private UserRepository userRepository;
     @Autowired
     private UserServices userServices;
-    private RegisterUserRequest registerUserRequest;
-    private RegisterUserResponse registerUserResponse;
+    private UserRegisterRequest userRegisterRequest;
+    private UserRegisterResponse userRegisterResponse;
+    private UserLoginRequest userLoginRequest;
+    private UserLoginResponse userLoginResponse;
 
     @BeforeEach
     void setUp() {
         userRepository.deleteAll();
-        registerUserRequest = new RegisterUserRequest();
-        registerUserResponse = new RegisterUserResponse();
+        userRegisterRequest = new UserRegisterRequest();
+        userRegisterResponse = new UserRegisterResponse();
+        userLoginRequest = new UserLoginRequest();
+        userLoginResponse = new UserLoginResponse();
     }
 
     @Test
     public void registerNewUser__registerTest() {
         registerUser();
-        assertNotNull(registerUserResponse.getId());
+        assertNotNull(userRegisterResponse.getId());
+        assertEquals("Registered successfully", userRegisterResponse.getMessage());
         assertEquals(1, userRepository.count());
     }
 
     @Test
-    public void registerNewUser__registerUserTest() {}
+    public void userCanLogin__loginTest() {
+        registerUser();
+        userLoginRequest.setUsername("Bram");
+        userLoginRequest.setPassword("password");
+        userLoginResponse = userServices.login(userLoginRequest);
+        assertEquals("Login successfully", userLoginResponse.getMessage());
+    }
 
     private void registerUser() {
-        registerUserRequest.setUsername("username");
-        registerUserRequest.setPassword("password");
-        registerUserResponse = userServices.register(registerUserRequest);
+        userRegisterRequest.setEmail("bram@fake.com");
+        userRegisterRequest.setUsername("Bram");
+        userRegisterRequest.setPassword("password");
+        userRegisterResponse = userServices.register(userRegisterRequest);
     }
 
 

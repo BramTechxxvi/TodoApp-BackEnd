@@ -1,25 +1,26 @@
 package org.bram.utils;
 
 import org.bram.data.models.User;
-import org.bram.dtos.requests.RegisterUserRequest;
-import org.bram.dtos.response.RegisterUserResponse;
+import org.bram.dtos.requests.UserRegisterRequest;
+import org.bram.dtos.response.UserRegisterResponse;
 
 public class Mapper {
 
-    public static User map(RegisterUserRequest  registerUserRequest) {
+    public static User map(UserRegisterRequest userRegisterRequest) {
         User user = new User();
-        user.setUsername(registerUserRequest.getUsername());
-        user.setPassword(registerUserRequest.getPassword());
+        user.setEmail(userRegisterRequest.getEmail());
+        user.setUsername(userRegisterRequest.getUsername());
+        user.setPassword(userRegisterRequest.getPassword());
 
         return user;
     }
 
-    public static RegisterUserResponse map(User user) {
-        RegisterUserResponse registerUserResponse = new RegisterUserResponse();
-        registerUserResponse.setId(user.getId());
-        registerUserResponse.setUsername(user.getUsername());
-        registerUserResponse.setMessage("Registered successfully");
+    public static UserRegisterResponse map(User user) {
+        UserRegisterResponse userRegisterResponse = new UserRegisterResponse();
+        userRegisterResponse.setId(user.getId());
+        userRegisterResponse.setUsername(user.getUsername());
+        userRegisterResponse.setMessage("Registered successfully");
 
-        return registerUserResponse;
+        return userRegisterResponse;
     }
 }
