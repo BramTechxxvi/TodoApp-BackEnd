@@ -15,8 +15,8 @@ public class Todo {
     private String id;
     private String title;
     private String description;
-    private TodoStatus status = TodoStatus.PENDING;
+    private TodoStatus status;
     private LocalDate dueDate;
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
