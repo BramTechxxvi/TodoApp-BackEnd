@@ -1,6 +1,6 @@
 package org.bram.data.models;
 
-public enum TodoStatus {
+public enum TaskStatus {
 
     COMPLETED("Completed"),
     IN_PROGRESS("In Progress..."),
@@ -9,7 +9,7 @@ public enum TodoStatus {
 
     private final String status;
 
-    TodoStatus(String status) {
+    TaskStatus(String status) {
         this.status = status;
     }
 

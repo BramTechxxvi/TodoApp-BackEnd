@@ -1,7 +1,7 @@
 package org.bram.services;
 
 import org.bram.data.models.User;
-import org.bram.data.repositories.TodoRepository;
+import org.bram.data.repositories.TaskRepository;
 import org.bram.data.repositories.UserRepository;
 import org.bram.dtos.requests.CreateTaskRequest;
 import org.bram.dtos.requests.UserLoginRequest;
@@ -32,7 +32,7 @@ class UserServicesImplTest {
     private CreateTaskRequest createTaskRequest;
     private CreateTaskResponse createTaskResponse;
     @Autowired
-    private TodoRepository todoRepository;
+    private TaskRepository taskRepository;
 
     @BeforeEach
     void setUp() {
@@ -72,7 +72,7 @@ class UserServicesImplTest {
         userServices.createTask(userId, createTaskRequest);
         //assertNotNull(createTaskResponse.get());
         assertEquals("Created task successfully", createTaskResponse.getMessage());
-        assertEquals(1, todoRepository.count());
+        assertEquals(1, taskRepository.count());
         assertEquals(1, userRepository.count());
     }
 

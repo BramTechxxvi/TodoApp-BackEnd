@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 
 @Data
 @Document(collection = "Tasks")
-public class Todo {
+public class Task {
 
     @Id
     private String id;
     private String title;
     private String description;
-    private TodoStatus status = TodoStatus.PENDING;
+    private TaskStatus status = TaskStatus.PENDING;
     private LocalDate dueDate;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt;

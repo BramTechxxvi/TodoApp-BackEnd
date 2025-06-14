@@ -1,6 +1,6 @@
 package org.bram.data.repositories;
 
-import org.bram.data.models.Todo;
+import org.bram.data.models.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,24 +12,24 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class TodoRepositoryTest {
+class TaskRepositoryTest {
 
     @Autowired
-    private TodoRepository todoRepository;
+    private TaskRepository taskRepository;
 
     @BeforeEach
     void setUp() {
-        todoRepository.deleteAll();
+        taskRepository.deleteAll();
     }
 
     @Test
     public void saveATodo__countIsOneTest() {
-        Todo newTodo = new Todo();
-        newTodo.setTitle("Buy groceries");
-        newTodo.setDescription("I am to get groceries on thursday evening");
-        Todo savedTodo = todoRepository.save(newTodo);
-        assertNotNull(savedTodo.getId());
-        assertEquals(1, todoRepository.count());
+        Task newTask = new Task();
+        newTask.setTitle("Buy groceries");
+        newTask.setDescription("I am to get groceries on thursday evening");
+        Task savedTask = taskRepository.save(newTask);
+        assertNotNull(savedTask.getId());
+        assertEquals(1, taskRepository.count());
     }
 
 }
