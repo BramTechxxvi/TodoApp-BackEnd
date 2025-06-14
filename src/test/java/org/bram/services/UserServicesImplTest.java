@@ -1,8 +1,12 @@
 package org.bram.services;
 
+import org.bram.data.models.User;
+import org.bram.data.repositories.TodoRepository;
 import org.bram.data.repositories.UserRepository;
+import org.bram.dtos.requests.CreateTaskRequest;
 import org.bram.dtos.requests.UserLoginRequest;
 import org.bram.dtos.requests.UserRegisterRequest;
+import org.bram.dtos.response.CreateTaskResponse;
 import org.bram.dtos.response.UserLoginResponse;
 import org.bram.dtos.response.UserRegisterResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +29,10 @@ class UserServicesImplTest {
     private UserRegisterResponse userRegisterResponse;
     private UserLoginRequest userLoginRequest;
     private UserLoginResponse userLoginResponse;
+    private CreateTaskRequest createTaskRequest;
+    private CreateTaskResponse createTaskResponse;
+    @Autowired
+    private TodoRepository todoRepository;
 
     @BeforeEach
     void setUp() {
@@ -33,6 +41,8 @@ class UserServicesImplTest {
         userRegisterResponse = new UserRegisterResponse();
         userLoginRequest = new UserLoginRequest();
         userLoginResponse = new UserLoginResponse();
+        createTaskRequest = new CreateTaskRequest();
+        createTaskResponse = new CreateTaskResponse();
     }
 
     @Test
@@ -50,6 +60,20 @@ class UserServicesImplTest {
         userLoginRequest.setPassword("password");
         userLoginResponse = userServices.login(userLoginRequest);
         assertEquals("Login successfully", userLoginResponse.getMessage());
+    }
+
+    @Test
+    public void userCanCreateTask__createTaskTest() {
+        userCanLogin__loginTest();
+        User userId = userRepository.findById(userLoginResponse.getId()).get();
+        createTaskRequest.setTitle("Pickup");
+        createTaskRequest.setDescription("I have to pick up a package at Eric's shop on saturday morning");
+        createTaskRequest.setDueDate("on the third of may 2025");
+        userServices.createTask(userId, createTaskRequest);
+        //assertNotNull(createTaskResponse.get());
+        assertEquals("Created task successfully", createTaskResponse.getMessage());
+        assertEquals(1, todoRepository.count());
+        assertEquals(1, userRepository.count());
     }
 
     private void registerUser() {

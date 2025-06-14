@@ -7,9 +7,11 @@ public enum TodoStatus {
     CANCELLED("Cancelled"),
     PENDING("Pending..."),;
 
-    private String status;
+    private final String status;
 
     TodoStatus(String status) {
         this.status = status;
     }
+
+
 }
