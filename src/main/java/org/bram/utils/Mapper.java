@@ -8,9 +8,9 @@ public class Mapper {
 
     public static User map(UserRegisterRequest userRegisterRequest) {
         User user = new User();
-        user.setEmail(userRegisterRequest.getEmail());
-        user.setUsername(userRegisterRequest.getUsername());
-        user.setPassword(userRegisterRequest.getPassword());
+        user.setEmail(userRegisterRequest.getEmail().trim());
+        user.setUsername(userRegisterRequest.getUsername().trim());
+        user.setPassword(userRegisterRequest.getPassword().trim());
 
         return user;
     }

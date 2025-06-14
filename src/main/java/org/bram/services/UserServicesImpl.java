@@ -2,10 +2,10 @@ package org.bram.services;
 
 import org.bram.data.models.User;
 import org.bram.data.repositories.UserRepository;
-import org.bram.dtos.requests.CreateTaskRequest;
+import org.bram.dtos.requests.ChangePasswordRequest;
 import org.bram.dtos.requests.UserLoginRequest;
 import org.bram.dtos.requests.UserRegisterRequest;
-import org.bram.dtos.response.CreateTaskResponse;
+import org.bram.dtos.response.ChangePasswordResponse;
 import org.bram.dtos.response.UserLoginResponse;
 import org.bram.dtos.response.UserRegisterResponse;
 import org.bram.exceptions.DetailsAlreadyInUseException;
@@ -50,6 +50,18 @@ public class UserServicesImpl implements UserServices {
         userLoginResponse.setMessage("Login successfully");
         return userLoginResponse;
     }
+
+//    @Override
+//    public ChangePasswordResponse changePassword(String userid, ChangePasswordRequest changePasswordRequest) {
+//        Optional<User> user = userRepository.findById(userid);
+//        changePasswordRequest.setOldPassword(changePasswordRequest.getOldPassword());
+//        changePasswordRequest.setNewPassword(changePasswordRequest.getNewPassword().trim());
+//
+//        ChangePasswordResponse changePasswordResponse = new ChangePasswordResponse();
+//        changePasswordResponse.setMessage("Password changed successfully");
+//
+//        return changePasswordResponse;
+//    }
 
     private void verifyNewEmail(String email) {
         if (userRepository.findByEmail(email).isPresent()) throw new DetailsAlreadyInUseException("Email already exists");
