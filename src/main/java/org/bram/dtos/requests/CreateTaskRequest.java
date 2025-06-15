@@ -13,7 +13,6 @@ public class CreateTaskRequest {
     private String title;
     @NotBlank
     private String description;
-    private String dueDate;
     private String status;
     private String createdAt;
 }

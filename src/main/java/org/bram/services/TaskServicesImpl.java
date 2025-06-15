@@ -1,11 +1,20 @@
 package org.bram.services;
 
-import org.bram.data.models.User;
+import org.bram.data.repositories.TaskRepository;
 import org.bram.dtos.requests.CreateTaskRequest;
 import org.bram.dtos.response.CreateTaskResponse;
+import org.springframework.stereotype.Service;
 
-public class TaskServicesImpl {
+@Service
+public class TaskServicesImpl implements TaskServices {
 
-   // CreateTaskResponse createTask(User userId, CreateTaskRequest createTaskRequest);
+    private TaskRepository taskRepository;
 
+    public TaskServicesImpl(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+    }
+    @Override
+    public CreateTaskResponse createTask(CreateTaskRequest request) {
+        return null;
+    }
 }
