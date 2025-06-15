@@ -50,11 +50,11 @@ class TaskServicesImplTest {
 
     @Test
     public void updateTaskTest() {
-        Tas
+        createTaskTest();
+        updateTaskRequest.setTaskId();
         updateTaskRequest.setDescription("I am to get groceries on saturday evening");
-        updateTaskRequest.setStatus(String.valueOf(TaskStatus.IN_PROGRESS));
         updateTaskResponse = taskServices.updateTask(updateTaskRequest);
-        assertEquals();
+        assertEquals("Pending", );
     }
   
 }

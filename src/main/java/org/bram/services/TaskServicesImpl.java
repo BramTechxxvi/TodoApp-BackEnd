@@ -4,13 +4,12 @@ import org.bram.data.models.Task;
 import org.bram.data.models.TaskStatus;
 import org.bram.data.repositories.TaskRepository;
 import org.bram.dtos.requests.CreateTaskRequest;
-import org.bram.dtos.requests.GetAllTasksRequest;
 import org.bram.dtos.requests.UpdateTaskRequest;
 import org.bram.dtos.response.CreateTaskResponse;
-import org.bram.dtos.response.GetAllTasksResponse;
 import org.bram.dtos.response.UpdateTaskResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,6 +28,7 @@ public class TaskServicesImpl implements TaskServices {
 
         Task savedTask = taskRepository.save(newTask);
         CreateTaskResponse createTaskResponse = new CreateTaskResponse();
+        createTaskResponse.setTaskId(savedTask.getId());
         createTaskResponse.setTitle(savedTask.getTitle());
         createTaskResponse.setMessage("Created successfully");
 
@@ -54,7 +54,9 @@ public class TaskServicesImpl implements TaskServices {
     }
 
     @Override
-    public GetAllTasksRequest getAllTasks(GetAllTasksResponse response) {
+    public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
+
+
 }
