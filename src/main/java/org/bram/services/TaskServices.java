@@ -7,5 +7,5 @@ public interface TaskServices {
 
     CreateTaskResponse createTask(CreateTaskRequest request);
 
-
+    UpdateTaskRequest updateTask(UpdateTaskResponse respose);
 }
