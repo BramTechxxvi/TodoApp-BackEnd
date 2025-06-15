@@ -1,8 +1,11 @@
 package org.bram.services;
 
+import org.bram.data.models.TaskStatus;
 import org.bram.data.repositories.TaskRepository;
 import org.bram.dtos.requests.CreateTaskRequest;
+import org.bram.dtos.requests.UpdateTaskRequest;
 import org.bram.dtos.response.CreateTaskResponse;
+import org.bram.dtos.response.UpdateTaskResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,17 +26,21 @@ class TaskServicesImplTest {
 
     private CreateTaskResponse createTaskResponse;
     private CreateTaskRequest createTaskRequest;
+    private UpdateTaskResponse updateTaskResponse;
+    private UpdateTaskRequest updateTaskRequest;
 
     @BeforeEach
     void setUp() {
         createTaskResponse = new CreateTaskResponse();
         createTaskRequest = new CreateTaskRequest();
+        updateTaskResponse = new UpdateTaskResponse();
+        updateTaskRequest = new UpdateTaskRequest();
         taskRepository.deleteAll();
     }
 
 
     @Test
-    public void testCreateTask() {
+    public void createTaskTest() {
         createTaskRequest.setTitle("Groceries");
         createTaskRequest.setDescription("I am to get groceries on thursday evening");
         createTaskResponse = taskServices.createTask(createTaskRequest);
@@ -42,6 +49,12 @@ class TaskServicesImplTest {
     }
 
     @Test
-    public void 
+    public void updateTaskTest() {
+        Tas
+        updateTaskRequest.setDescription("I am to get groceries on saturday evening");
+        updateTaskRequest.setStatus(String.valueOf(TaskStatus.IN_PROGRESS));
+        updateTaskResponse = taskServices.updateTask(updateTaskRequest);
+        assertEquals();
+    }
   
 }

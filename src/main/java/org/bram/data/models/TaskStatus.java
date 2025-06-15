@@ -2,16 +2,16 @@ package org.bram.data.models;
 
 public enum TaskStatus {
 
-    COMPLETED("Completed"),
-    IN_PROGRESS("In Progress..."),
-    CANCELLED("Cancelled"),
-    PENDING("Pending..."),;
+    COMPLETED,
+    IN_PROGRESS,
+    CANCELLED,
+    PENDING
 
-    private final String status;
+   // private final String status;
 
-    TaskStatus(String status) {
-        this.status = status;
-    }
+//    TaskStatus(String status) {
+//        this.status = status;
+//    }
 
 
 }
