@@ -1,10 +1,9 @@
 package org.bram.services;
 
+import org.bram.data.models.Task;
 import org.bram.data.models.TaskStatus;
 import org.bram.data.repositories.TaskRepository;
-import org.bram.dtos.requests.CreateTaskRequest;
-import org.bram.dtos.requests.DeleteTaskRequest;
-import org.bram.dtos.requests.UpdateTaskRequest;
+import org.bram.dtos.requests.*;
 import org.bram.dtos.response.CreateTaskResponse;
 import org.bram.dtos.response.UpdateTaskResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,5 +70,26 @@ class TaskServicesImplTest {
         taskServices.deleteTask(deleteTaskRequest);
         assertEquals(1, taskRepository.count());
     }
-  
+
+    @Test
+    public void markTaskAsCompletedTest() {
+        createTaskTest();
+        MarkTaskAsCompletedRequest markRequest = new MarkTaskAsCompletedRequest();
+        markRequest.setTaskId(createTaskResponse.getTaskId());
+        markRequest.setStatus(TaskStatus.COMPLETED);
+        taskServices.markTaskAsCompleted(markRequest);
+        Task task = taskRepository.findById(createTaskResponse.getTaskId()).get();
+        assertEquals("Completed", task.getStatus().getStatus() );
+    }
+
+    @Test
+    public void markTaskAsInProgressTest() {
+        createTaskTest();
+        MarkTaskAsInProgressRequest markRequest = new MarkTaskAsInProgressRequest();
+        markRequest.setId(createTaskResponse.getTaskId());
+        markRequest.setStatus(TaskStatus.IN_PROGRESS);
+        taskServices.markTaskAsCompleted(markRequest);
+        Task taskId = taskRepository.findById(createTaskResponse.getTaskId()).get();
+        assertEquals("In Progress...", taskId.getStatus().getStatus());
+    }
 }

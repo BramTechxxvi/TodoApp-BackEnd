@@ -15,5 +15,5 @@ public class UpdateTaskRequest {
     private String description;
     private TaskStatus status;
     @DateTimeFormat(pattern = "yyyy-MMM-dd HH:mm")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 }

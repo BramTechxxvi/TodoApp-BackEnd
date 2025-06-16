@@ -1,16 +1,13 @@
 package org.bram.services;
 
 import org.bram.data.models.Task;
+import org.bram.data.models.TaskStatus;
 import org.bram.data.repositories.TaskRepository;
-import org.bram.dtos.requests.CreateTaskRequest;
-import org.bram.dtos.requests.DeleteTaskRequest;
-import org.bram.dtos.requests.FindTasKRequest;
-import org.bram.dtos.requests.UpdateTaskRequest;
-import org.bram.dtos.response.CreateTaskResponse;
-import org.bram.dtos.response.DeleteTaskResponse;
-import org.bram.dtos.response.UpdateTaskResponse;
+import org.bram.dtos.requests.*;
+import org.bram.dtos.response.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,9 +37,11 @@ public class TaskServicesImpl implements TaskServices {
     @Override
     public UpdateTaskResponse updateTask(UpdateTaskRequest request) {
         Optional<Task> existingTask = taskRepository.findById(request.getTaskId());
+        if (existingTask.isEmpty()) throw RuntimeException("Task not found");
+
         Task taskToUpdate = existingTask.get();
         taskToUpdate.setDescription(request.getDescription());
-        taskToUpdate.setUpdatedAt(request.getUpdatedAt());
+        taskToUpdate.setUpdatedAt(LocalDateTime.now());
 
         Task updatedTask = taskRepository.save(taskToUpdate);
 
@@ -67,11 +66,28 @@ public class TaskServicesImpl implements TaskServices {
         return response;
     }
 
-    public Optional<Task> getTaskById(FindTasKRequest findTasKRequest) {
-        Optional<Task> task = taskRepository.findById(taskId);
+    @Override
+    public FindTasKResponse getTaskById(FindTasKRequest findTasKRequest) {
+        Optional<Task> task = taskRepository.findById(findTasKRequest.getTaskId());
         if (task.isEmpty()) throw new RuntimeException("Task not found");
 
-        return task;
+        FindTasKResponse findTasKResponse = new FindTasKResponse();
+        findTasKResponse.setTask(task.get());
+        return findTasKResponse;
+    }
+
+    @Override
+    public MarkTaskAsCompletedResponse markTaskAsCompleted(MarkTaskAsCompletedRequest request) {
+        Optional<Task> task = taskRepository.findById(request.getTaskId());
+        if (task.isEmpty()) throw new RuntimeException("Task not found");
+
+        Task newTask = task.get();
+        newTask.setStatus(TaskStatus.COMPLETED);
+        taskRepository.save(newTask);
+
+        MarkTaskAsCompletedResponse markTaskAsCompletedResponse = new MarkTaskAsCompletedResponse();
+        markTaskAsCompletedResponse.setMessage("Success");
+        return markTaskAsCompletedResponse;
     }
 
 

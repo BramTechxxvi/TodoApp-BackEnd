@@ -8,8 +8,7 @@ public enum TaskStatus {
 
     COMPLETED("Completed"),
     IN_PROGRESS("In Progress..."),
-    CANCELLED("Cancelled"),
-    PENDING("Pending..."),;
+    PENDING("Pending...");
 
     private final String status;
 
