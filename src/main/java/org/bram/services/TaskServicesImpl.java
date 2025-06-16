@@ -1,11 +1,13 @@
 package org.bram.services;
 
 import org.bram.data.models.Task;
-import org.bram.data.models.TaskStatus;
 import org.bram.data.repositories.TaskRepository;
 import org.bram.dtos.requests.CreateTaskRequest;
+import org.bram.dtos.requests.DeleteTaskRequest;
+import org.bram.dtos.requests.FindTasKRequest;
 import org.bram.dtos.requests.UpdateTaskRequest;
 import org.bram.dtos.response.CreateTaskResponse;
+import org.bram.dtos.response.DeleteTaskResponse;
 import org.bram.dtos.response.UpdateTaskResponse;
 import org.springframework.stereotype.Service;
 
@@ -39,9 +41,7 @@ public class TaskServicesImpl implements TaskServices {
     public UpdateTaskResponse updateTask(UpdateTaskRequest request) {
         Optional<Task> existingTask = taskRepository.findById(request.getTaskId());
         Task taskToUpdate = existingTask.get();
-
         taskToUpdate.setDescription(request.getDescription());
-        taskToUpdate.setStatus(TaskStatus.valueOf(request.getStatus()));
         taskToUpdate.setUpdatedAt(request.getUpdatedAt());
 
         Task updatedTask = taskRepository.save(taskToUpdate);
@@ -49,6 +49,7 @@ public class TaskServicesImpl implements TaskServices {
         UpdateTaskResponse updateTaskResponse = new UpdateTaskResponse();
         updateTaskResponse.setMessage("Updated successfully");
         updateTaskResponse.setUpdatedAt(updatedTask.getUpdatedAt());
+        updateTaskResponse.setStatus(updatedTask.getStatus());
 
         return updateTaskResponse;
     }
@@ -56,6 +57,21 @@ public class TaskServicesImpl implements TaskServices {
     @Override
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
+    }
+
+    @Override
+    public DeleteTaskResponse deleteTask(DeleteTaskRequest request) {
+        taskRepository.deleteById(request.getId());
+        DeleteTaskResponse response = new DeleteTaskResponse();
+        response.setMessage("Deleted successfully");
+        return response;
+    }
+
+    public Optional<Task> getTaskById(FindTasKRequest findTasKRequest) {
+        Optional<Task> task = taskRepository.findById(taskId);
+        if (task.isEmpty()) throw new RuntimeException("Task not found");
+
+        return task;
     }
 
 

@@ -3,6 +3,7 @@ package org.bram.services;
 import org.bram.data.models.TaskStatus;
 import org.bram.data.repositories.TaskRepository;
 import org.bram.dtos.requests.CreateTaskRequest;
+import org.bram.dtos.requests.DeleteTaskRequest;
 import org.bram.dtos.requests.UpdateTaskRequest;
 import org.bram.dtos.response.CreateTaskResponse;
 import org.bram.dtos.response.UpdateTaskResponse;
@@ -51,10 +52,24 @@ class TaskServicesImplTest {
     @Test
     public void updateTaskTest() {
         createTaskTest();
-        updateTaskRequest.setTaskId();
+        updateTaskRequest.setTaskId(createTaskResponse.getTaskId());
         updateTaskRequest.setDescription("I am to get groceries on saturday evening");
         updateTaskResponse = taskServices.updateTask(updateTaskRequest);
-        assertEquals("Pending", );
+        assertEquals("Pending...", updateTaskResponse.getStatus().getStatus());
+        assertEquals("Updated successfully", updateTaskResponse.getMessage());
+    }
+
+    @Test
+    public void deleteTaskTest() {
+        createTaskTest();
+        CreateTaskRequest secondCreateTaskRequest = new CreateTaskRequest();
+        secondCreateTaskRequest.setTitle("Electronics");
+        secondCreateTaskRequest.setDescription("I am to get groceries on thursday evening");
+        taskServices.createTask(secondCreateTaskRequest);
+        DeleteTaskRequest deleteTaskRequest = new DeleteTaskRequest();
+        deleteTaskRequest.setId(createTaskResponse.getTaskId());
+        taskServices.deleteTask(deleteTaskRequest);
+        assertEquals(1, taskRepository.count());
     }
   
 }

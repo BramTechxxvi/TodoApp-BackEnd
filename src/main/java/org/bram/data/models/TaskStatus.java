@@ -1,17 +1,21 @@
 package org.bram.data.models;
 
+
+import lombok.Getter;
+
+@Getter
 public enum TaskStatus {
 
-    COMPLETED,
-    IN_PROGRESS,
-    CANCELLED,
-    PENDING
+    COMPLETED("Completed"),
+    IN_PROGRESS("In Progress..."),
+    CANCELLED("Cancelled"),
+    PENDING("Pending..."),;
 
-   // private final String status;
+    private final String status;
 
-//    TaskStatus(String status) {
-//        this.status = status;
-//    }
+    TaskStatus(String status) {
+        this.status = status;
+    }
 
 
 }
