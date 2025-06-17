@@ -12,6 +12,7 @@ public class UpdateTaskRequest {
 
     @Id
     private String taskId;
+    private String title;
     private String description;
     private TaskStatus status;
     @DateTimeFormat(pattern = "yyyy-MMM-dd HH:mm")

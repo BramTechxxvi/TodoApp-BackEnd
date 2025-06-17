@@ -88,7 +88,7 @@ class TaskServicesImplTest {
         MarkTaskAsInProgressRequest markRequest = new MarkTaskAsInProgressRequest();
         markRequest.setId(createTaskResponse.getTaskId());
         markRequest.setStatus(TaskStatus.IN_PROGRESS);
-        taskServices.markTaskAsCompleted(markRequest);
+        taskServices.markTaskAsInProgress(markRequest);
         Task taskId = taskRepository.findById(createTaskResponse.getTaskId()).get();
         assertEquals("In Progress...", taskId.getStatus().getStatus());
     }

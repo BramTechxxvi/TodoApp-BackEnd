@@ -6,6 +6,8 @@ import org.bram.data.models.TaskStatus;
 import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
+
 @Data
 public class CreateTaskRequest {
 
@@ -17,5 +19,5 @@ public class CreateTaskRequest {
     private String description;
     private TaskStatus status;
     @DateTimeFormat(pattern = "yyyy-MMM-dd HH:mm")
-    private String createdAt;
+    private LocalDateTime createdAt;
 }

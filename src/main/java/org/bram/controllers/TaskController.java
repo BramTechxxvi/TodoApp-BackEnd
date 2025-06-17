@@ -1,17 +1,17 @@
 package org.bram.controllers;
 
+import jakarta.validation.Valid;
 import org.bram.data.models.Task;
 import org.bram.dtos.requests.*;
 import org.bram.dtos.response.*;
 import org.bram.services.TaskServices;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping ("/api/tasks")
+@RequestMapping ("/tasks")
+@CrossOrigin(origins = "*" , methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class TaskController {
 
     private TaskServices taskServices;
@@ -21,14 +21,15 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<CreateTaskResponse> createTask(@RequestBody CreateTaskRequest createTaskRequest) {
+    public ResponseEntity<CreateTaskResponse> createTask(@RequestBody @Valid CreateTaskRequest createTaskRequest) {
         CreateTaskResponse response = taskServices.createTask(createTaskRequest);
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping
-    public ResponseEntity<UpdateTaskResponse> updateTask(@RequestBody UpdateTaskRequest updateTaskRequest) {
-        UpdateTaskResponse response = taskServices.updateTask(updateTaskRequest);
+    @PutMapping("/{id}")
+    public ResponseEntity<UpdateTaskResponse> updateTask(@PathVariable String id, @RequestBody UpdateTaskRequest request) {
+        request.setTaskId(id);
+        UpdateTaskResponse response = taskServices.updateTask(request);
         return ResponseEntity.ok(response);
     }
 
@@ -61,11 +62,11 @@ public class TaskController {
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/{id}/in_progress")
+    @PatchMapping("/{id}/in-progress")
     public ResponseEntity<MarkTaskAsInProgressResponse> markTaskAsInProgress(@PathVariable String id) {
         MarkTaskAsInProgressRequest request = new MarkTaskAsInProgressRequest();
         request.setId(id);
-        MarkTaskAsInProgressResponse response = taskServices.markTaskInProgress(request);
+        MarkTaskAsInProgressResponse response = taskServices.markTaskAsInProgress(request);
         return ResponseEntity.ok(response);
     }
 

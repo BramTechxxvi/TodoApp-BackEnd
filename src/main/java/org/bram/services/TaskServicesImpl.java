@@ -5,6 +5,7 @@ import org.bram.data.models.TaskStatus;
 import org.bram.data.repositories.TaskRepository;
 import org.bram.dtos.requests.*;
 import org.bram.dtos.response.*;
+import org.bram.exceptions.TaskNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,11 +25,14 @@ public class TaskServicesImpl implements TaskServices {
         Task newTask = new Task();
         newTask.setTitle(request.getTitle().trim());
         newTask.setDescription(request.getDescription());
+        newTask.setCreatedAt(LocalDateTime.now());
+        newTask.setStatus(TaskStatus.PENDING);
 
         Task savedTask = taskRepository.save(newTask);
         CreateTaskResponse createTaskResponse = new CreateTaskResponse();
         createTaskResponse.setTaskId(savedTask.getId());
         createTaskResponse.setTitle(savedTask.getTitle());
+        createTaskResponse.setCreatedAt(savedTask.getCreatedAt());
         createTaskResponse.setMessage("Created successfully");
 
         return createTaskResponse;
@@ -37,9 +41,10 @@ public class TaskServicesImpl implements TaskServices {
     @Override
     public UpdateTaskResponse updateTask(UpdateTaskRequest request) {
         Optional<Task> existingTask = taskRepository.findById(request.getTaskId());
-        if (existingTask.isEmpty()) throw RuntimeException("Task not found");
+        if (existingTask.isEmpty()) throw new RuntimeException("Task not found");
 
         Task taskToUpdate = existingTask.get();
+        if (!request.getTitle().trim().isEmpty()) taskToUpdate.setTitle(request.getTitle().trim());
         taskToUpdate.setDescription(request.getDescription());
         taskToUpdate.setUpdatedAt(LocalDateTime.now());
 
@@ -60,6 +65,8 @@ public class TaskServicesImpl implements TaskServices {
 
     @Override
     public DeleteTaskResponse deleteTask(DeleteTaskRequest request) {
+        Optional<Task> task = taskRepository.findById(request.getId());
+        if(task.isEmpty()) throw new TaskNotFoundException("Task not found");
         taskRepository.deleteById(request.getId());
         DeleteTaskResponse response = new DeleteTaskResponse();
         response.setMessage("Deleted successfully");
@@ -88,6 +95,20 @@ public class TaskServicesImpl implements TaskServices {
         MarkTaskAsCompletedResponse markTaskAsCompletedResponse = new MarkTaskAsCompletedResponse();
         markTaskAsCompletedResponse.setMessage("Success");
         return markTaskAsCompletedResponse;
+    }
+
+    @Override
+    public MarkTaskAsInProgressResponse markTaskAsInProgress(MarkTaskAsInProgressRequest request) {
+        Optional<Task> task = taskRepository.findById(request.getId());
+        if (task.isEmpty()) throw new RuntimeException("Task not found");
+
+        Task newTask = task.get();
+        newTask.setStatus(TaskStatus.IN_PROGRESS);
+        taskRepository.save(newTask);
+
+        MarkTaskAsInProgressResponse markResponse = new MarkTaskAsInProgressResponse();
+        markResponse.setMessage("Success");
+        return markResponse;
     }
 
 

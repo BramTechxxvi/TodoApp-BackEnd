@@ -1,17 +1,19 @@
 package org.bram.dtos.response;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 @Data
 public class CreateTaskResponse {
 
     @Id
     private String taskId;
-    @NotBlank(message = "Task must have a title")
     private String title;
-    private String createdAt;
+    @DateTimeFormat(pattern = "yyy-MMM-dd HH:mm")
+    private LocalDateTime createdAt;
     private String message;
 
 }
