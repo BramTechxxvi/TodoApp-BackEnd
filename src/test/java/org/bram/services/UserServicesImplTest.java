@@ -9,6 +9,7 @@ import org.bram.dtos.response.LoginResponse;
 import org.bram.dtos.response.RegisterUserResponse;
 import org.bram.exceptions.DetailsAlreadyInUseException;
 import org.bram.exceptions.InvalidCredentialsException;
+import org.bram.exceptions.SamePasswordException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,10 +98,18 @@ class UserServicesImplTest {
         changePasswordRequest.setOldPassword("123456");
         changePasswordRequest.setNewPassword("password");
         changePasswordResponse = userServices.changePassword(changePasswordRequest);
-        assertEquals("Success", changePasswordResponse.getMessage());
+        assertEquals("Password changed successfully", changePasswordResponse.getMessage());
     }
 
-    @
+    @Test
+    public void changePasswordToOldPassword__throwsException() {
+        loginAUser__loginTest();
+        changePasswordRequest.setOldPassword("123456");
+        changePasswordRequest.setNewPassword("123456");
+        Exception error = assertThrows(SamePasswordException.class, ()-> userServices.changePassword(changePasswordRequest));
+        assertEquals("New password cannot be the same as the old password", error.getMessage());
+
+    }
 
     private void registerUser() {
         registerRequest.setFirstName("Grace");

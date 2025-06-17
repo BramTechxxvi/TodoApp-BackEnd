@@ -43,11 +43,15 @@ public class UserServicesImpl implements UserServices {
         loginResponse.setMessage("Welcome back " + fullName);
 
         return loginResponse;
-
     }
 
     @Override
     public ChangePasswordResponse changePassword(ChangePasswordRequest request) {
+        return null;
+    }
+
+    @Override
+    public ChangeEmailResponse changeEmail(ChangeEmailRequest request) {
         return null;
     }
 
