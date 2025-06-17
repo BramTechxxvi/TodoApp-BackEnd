@@ -1,15 +1,9 @@
 package org.bram.services;
 
 import org.bram.data.repositories.UserRepository;
-import org.bram.dtos.requests.ChangePasswordRequest;
-import org.bram.dtos.requests.LoginRequest;
-import org.bram.dtos.requests.RegisterUserRequest;
-import org.bram.dtos.response.ChangePasswordResponse;
-import org.bram.dtos.response.LoginResponse;
-import org.bram.dtos.response.RegisterUserResponse;
-import org.bram.exceptions.DetailsAlreadyInUseException;
-import org.bram.exceptions.InvalidCredentialsException;
-import org.bram.exceptions.SamePasswordException;
+import org.bram.dtos.requests.*;
+import org.bram.dtos.response.*;
+import org.bram.exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

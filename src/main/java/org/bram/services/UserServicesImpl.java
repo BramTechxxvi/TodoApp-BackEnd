@@ -47,7 +47,21 @@ public class UserServicesImpl implements UserServices {
 
     @Override
     public ChangePasswordResponse changePassword(ChangePasswordRequest request) {
-        return null;
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(()-> new InvalidCredentialsException("User not found"));
+
+        boolean isCorrect = verifyPassword(request.getOldPassword(), user.getPassword());
+        if (!isCorrect) throw new InvalidCredentialsException("Old password not correct");
+
+        boolean samePassword = request.getNewPassword().equals(user.getPassword());
+        if (samePassword) throw new SamePasswordException("New password must not be same as old password");
+
+        user.setPassword(hashPassword(request.getNewPassword()));
+        userRepository.save(user);
+        ChangePasswordResponse response = new ChangePasswordResponse();
+        response.setMessage("Password changed successfully");
+
+        return response;
     }
 
     @Override
@@ -58,5 +72,6 @@ public class UserServicesImpl implements UserServices {
     private void verifyNewEmail(String email) {
         if (userRepository.existsByEmail(email)) throw new DetailsAlreadyInUseException("Email already exists");
     }
+
 
 }
