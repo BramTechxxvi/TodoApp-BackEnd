@@ -1,6 +1,7 @@
 package org.bram.services;
 
 import org.bram.data.models.User;
+import org.bram.data.repositories.TaskRepository;
 import org.bram.data.repositories.UserRepository;
 import org.bram.dtos.requests.*;
 import org.bram.dtos.response.*;
@@ -19,7 +20,7 @@ public class UserServicesImpl implements UserServices {
 
     private UserRepository userRepository;
 
-    public UserServicesImpl(UserRepository userRepository) {
+    public UserServicesImpl(UserRepository userRepository, TaskRepository taskRepository) {
         this.userRepository = userRepository;
     }
 
@@ -74,7 +75,13 @@ public class UserServicesImpl implements UserServices {
 
         User user = optionalUser.get();
         boolean isSameEmail = request.getNewEmail().equals(request.getOldEmail());
-        if (isSameEmail) throw new SameEmailException("New emai; cannot be same as old email");
+        if (isSameEmail) throw new SameEmailException("New email cannot be same as old email");
+
+        boolean isCorrect = request.getOldEmail().equals(user.getEmail());
+        if(!isCorrect) throw new IncorrectOldEmailException("Old email not correct");
+
+        user.setEmail(request.getNewEmail());
+        userRepository.save(user);
 
         ChangeEmailResponse response = new ChangeEmailResponse();
         response.setMessage("Email changed successfully");

@@ -101,7 +101,7 @@ class UserServicesImplTest {
     }
 
     @Test
-    public void changePasswordWithOldPassword__throwsException() {
+    public void changePasswordWithSameOldPassword__throwsException() {
         loginAUser__loginTest();
         changePasswordRequest.setUserId(loginResponse.getUserId());
         changePasswordRequest.setOldPassword("password");
@@ -126,7 +126,7 @@ class UserServicesImplTest {
         changeEmailRequest.setUserId(loginResponse.getUserId());
         changeEmailRequest.setOldEmail("grace@ayoola.com");
         changeEmailRequest.setNewEmail("graceAyoola@gmail.com");
-        userServices.changeEmail(changeEmailRequest);
+        changeEmailResponse = userServices.changeEmail(changeEmailRequest);
         assertEquals("Email changed successfully", changeEmailResponse.getMessage());
     }
 
@@ -134,8 +134,25 @@ class UserServicesImplTest {
     public void changeEmailWithWrongOldEmail__throwsException() {
         loginAUser__loginTest();
         changeEmailRequest.setUserId(loginResponse.getUserId());
+        changeEmailRequest.setOldEmail("grace@ayoola.com");
+        changeEmailRequest.setNewEmail("graceAyoola@yahoo.com");
+        Exception error = assertThrows(IllegalArgumentException.class, ()-> changeEmailResponse = userServices.changeEmail(changeEmailRequest));
+        assertEquals("Old email not correct", error.getMessage());
+    }
+
+    @Test
+    public void changeEmailWithSameOldEmail__throwsException() {
+        loginAUser__loginTest();
+        changePasswordRequest.setUserId(loginResponse.getUserId());
+        changeEmailRequest.setOldEmail("graceAyoola@gmail.com");
+        changeEmailRequest.setNewEmail("graceAyoola@gmail.com");
+        Exception error = assertThrows(SameEmailException.class, ()-> userServices.changeEmail(changeEmailRequest));
+        assertEquals("New email cannot be same as old email", error.getMessage());
 
     }
+
+    @Test
+    public void userCanLogout__logoutTest() {}
 
 
     private void registerUser() {
