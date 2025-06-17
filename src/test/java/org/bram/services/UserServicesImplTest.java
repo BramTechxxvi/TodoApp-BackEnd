@@ -1,7 +1,9 @@
 package org.bram.services;
 
 import org.bram.data.repositories.UserRepository;
+import org.bram.dtos.requests.LoginRequest;
 import org.bram.dtos.requests.RegisterUserRequest;
+import org.bram.dtos.response.LoginResponse;
 import org.bram.dtos.response.RegisterUserResponse;
 import org.bram.exceptions.DetailsAlreadyInUseException;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +25,8 @@ class UserServicesImplTest {
     private UserRepository userRepository;
     private RegisterUserRequest registerRequest;
     private RegisterUserResponse registerResponse;
+    private LoginRequest loginRequest;
+    private LoginResponse loginResponse;
 
 
     @BeforeEach
@@ -30,6 +34,8 @@ class UserServicesImplTest {
         userRepository.deleteAll();
         registerRequest = new RegisterUserRequest();
         registerResponse = new RegisterUserResponse();
+        loginRequest = new LoginRequest();
+        loginResponse = new LoginResponse();
     }
 
     @Test
@@ -55,6 +61,12 @@ class UserServicesImplTest {
     @Test
     public void loginAUser__loginTest() {
         registerUser();
+        loginRequest.setEmail("grace@ayoola.com");
+        loginRequest.setPassword("password");
+        loginResponse = userServices.login(loginRequest);
+        assertEquals("Welcome back", loginResponse.getMessage());
+
+
     }
 
     private void registerUser() {
