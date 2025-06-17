@@ -4,6 +4,8 @@ import org.bram.data.models.User;
 import org.bram.dtos.requests.RegisterUserRequest;
 import org.bram.dtos.response.RegisterUserResponse;
 
+import static org.bram.utils.PasswordUtil.hashPassword;
+
 public class Mapper {
 
     public static User map(RegisterUserRequest request) {
@@ -11,7 +13,7 @@ public class Mapper {
         user.setFirstName(request.getFirstName().trim());
         user.setLastName(request.getLastName().trim());
         user.setEmail(request.getEmail().trim());
-        user.setPassword(request.getPassword().trim());
+        user.setPassword(hashPassword(request.getPassword().trim()));
 
         return user;
     }

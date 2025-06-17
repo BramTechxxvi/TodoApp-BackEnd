@@ -2,16 +2,14 @@ package org.bram.services;
 
 import org.bram.data.models.User;
 import org.bram.data.repositories.UserRepository;
-import org.bram.dtos.requests.LoginRequest;
-import org.bram.dtos.requests.RegisterUserRequest;
-import org.bram.dtos.response.LoginResponse;
-import org.bram.dtos.response.RegisterUserResponse;
-import org.bram.exceptions.DetailsAlreadyInUseException;
+import org.bram.dtos.requests.*;
+import org.bram.dtos.response.*;
+import org.bram.exceptions.*;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
-import static org.bram.utils.Mapper.map;
+import static org.bram.utils.Mapper.*;
+import static org.bram.utils.PasswordUtil.*;
 
 
 @Service
@@ -34,13 +32,27 @@ public class UserServicesImpl implements UserServices {
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
+        User user = userRepository.findByEmail(loginRequest.getEmail())
+                .orElseThrow(()-> new InvalidCredentialsException("Invalid credentials"));
+
+        boolean passwordMatches = verifyPassword(loginRequest.getPassword(), user.getPassword());
+        if (!passwordMatches) throw new InvalidCredentialsException("Invalid credentials");
+
+        LoginResponse loginResponse = new LoginResponse();
+        String fullName = user.getFirstName() + " " + user.getLastName();
+        loginResponse.setMessage("Welcome back " + fullName);
+
+        return loginResponse;
+
+    }
+
+    @Override
+    public ChangePasswordResponse changePassword(ChangePasswordRequest request) {
         return null;
     }
 
     private void verifyNewEmail(String email) {
-        for(User user : userRepository.findAll()) {
-            if (user.getEmail().equals(email)) throw new DetailsAlreadyInUseException("Email already exists");
-        }
+        if (userRepository.existsByEmail(email)) throw new DetailsAlreadyInUseException("Email already exists");
     }
 
 }
