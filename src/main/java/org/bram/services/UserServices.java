@@ -1,13 +1,7 @@
 package org.bram.services;
 
-import org.bram.dtos.requests.ChangeEmailRequest;
-import org.bram.dtos.requests.ChangePasswordRequest;
-import org.bram.dtos.requests.LoginRequest;
-import org.bram.dtos.requests.RegisterUserRequest;
-import org.bram.dtos.response.ChangeEmailResponse;
-import org.bram.dtos.response.ChangePasswordResponse;
-import org.bram.dtos.response.LoginResponse;
-import org.bram.dtos.response.RegisterUserResponse;
+import org.bram.dtos.requests.*;
+import org.bram.dtos.response.*;
 
 public interface UserServices {
 
@@ -15,4 +9,5 @@ public interface UserServices {
     LoginResponse login(LoginRequest loginRequest);
     ChangePasswordResponse changePassword(ChangePasswordRequest request);
     ChangeEmailResponse changeEmail(ChangeEmailRequest request);
+    UserLogoutResponse logout(UserLogoutRequest request);
 }

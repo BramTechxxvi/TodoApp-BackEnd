@@ -26,6 +26,8 @@ class UserServicesImplTest {
     private LoginResponse loginResponse;
     private ChangePasswordRequest changePasswordRequest;
     private ChangePasswordResponse changePasswordResponse;
+    private ChangeEmailResponse changeEmailResponse;
+    private ChangeEmailRequest changeEmailRequest;
 
 
     @BeforeEach
@@ -37,6 +39,8 @@ class UserServicesImplTest {
         loginResponse = new LoginResponse();
         changePasswordRequest = new ChangePasswordRequest();
         changePasswordResponse = new ChangePasswordResponse();
+        changeEmailResponse = new ChangeEmailResponse();
+        changeEmailRequest = new ChangeEmailRequest();
     }
 
     @Test
@@ -89,6 +93,7 @@ class UserServicesImplTest {
     @Test
     public void userCanChangePassword__changePasswordTest() {
         loginAUser__loginTest();
+        changePasswordRequest.setUserId(loginResponse.getUserId());
         changePasswordRequest.setOldPassword("123456");
         changePasswordRequest.setNewPassword("password");
         changePasswordResponse = userServices.changePassword(changePasswordRequest);
@@ -96,14 +101,42 @@ class UserServicesImplTest {
     }
 
     @Test
-    public void changePasswordToOldPassword__throwsException() {
+    public void changePasswordWithOldPassword__throwsException() {
         loginAUser__loginTest();
-        changePasswordRequest.setOldPassword("123456");
-        changePasswordRequest.setNewPassword("123456");
+        changePasswordRequest.setUserId(loginResponse.getUserId());
+        changePasswordRequest.setOldPassword("password");
+        changePasswordRequest.setNewPassword("password");
         Exception error = assertThrows(SamePasswordException.class, ()-> userServices.changePassword(changePasswordRequest));
         assertEquals("New password cannot be the same as the old password", error.getMessage());
+    }
+
+    @Test
+    public void changePasswordWithWrongOldPassword__throwsException() {
+        loginAUser__loginTest();
+        changePasswordRequest.setUserId(loginResponse.getUserId());
+        changePasswordRequest.setOldPassword("vudcnbis");
+        changePasswordRequest.setNewPassword("123456");
+        Exception error = assertThrows(IncorrectOldPasswordException.class, ()-> userServices.changePassword(changePasswordRequest));
+        assertEquals("Old password not correct", error.getMessage());
+    }
+
+    @Test
+    public void userCanChangeEmail__changeEmailTest() {
+        loginAUser__loginTest();
+        changeEmailRequest.setUserId(loginResponse.getUserId());
+        changeEmailRequest.setOldEmail("grace@ayoola.com");
+        changeEmailRequest.setNewEmail("graceAyoola@gmail.com");
+        userServices.changeEmail(changeEmailRequest);
+        assertEquals("Email changed successfully", changeEmailResponse.getMessage());
+    }
+
+    @Test
+    public void changeEmailWithWrongOldEmail__throwsException() {
+        loginAUser__loginTest();
+        changeEmailRequest.setUserId(loginResponse.getUserId());
 
     }
+
 
     private void registerUser() {
         registerRequest.setFirstName("Grace");
