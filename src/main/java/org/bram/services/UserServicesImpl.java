@@ -77,8 +77,8 @@ public class UserServicesImpl implements UserServices {
         boolean isSameEmail = request.getNewEmail().equals(request.getOldEmail());
         if (isSameEmail) throw new SameEmailException("New email cannot be same as old email");
 
-        boolean isCorrect = request.getOldEmail().equals(user.getEmail());
-        if(!isCorrect) throw new IncorrectOldEmailException("Old email not correct");
+        boolean isOldEmail = request.getOldEmail().equals(user.getEmail());
+        if(!isOldEmail) throw new IncorrectOldEmailException("Old email not correct");
 
         user.setEmail(request.getNewEmail());
         userRepository.save(user);
