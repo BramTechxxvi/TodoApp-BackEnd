@@ -1,7 +1,6 @@
 package org.bram.services;
 
 import org.bram.data.models.User;
-import org.bram.data.repositories.TaskRepository;
 import org.bram.data.repositories.UserRepository;
 import org.bram.dtos.requests.*;
 import org.bram.dtos.response.*;
@@ -20,7 +19,7 @@ public class UserServicesImpl implements UserServices {
 
     private UserRepository userRepository;
 
-    public UserServicesImpl(UserRepository userRepository, TaskRepository taskRepository) {
+    public UserServicesImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -87,6 +86,7 @@ public class UserServicesImpl implements UserServices {
 
         ChangeEmailResponse response = new ChangeEmailResponse();
         response.setMessage("Email changed successfully");
+
         return response;
     }
 
@@ -96,8 +96,13 @@ public class UserServicesImpl implements UserServices {
                 .orElseThrow(()-> new UserNotFoundException("User not found"));
 
         if(!user.isLoggedIn()) throw new UserNotLoggedInException("User is not logged in");
-
         user.setLoggedIn(false);
+        userRepository.save(user);
+
+        UserLogoutResponse response = new UserLogoutResponse();
+        response.setMessage("We hope to see you again");
+
+        return response;
     }
 
     private void verifyNewEmail(String email) {

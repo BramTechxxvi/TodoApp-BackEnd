@@ -15,7 +15,7 @@ public class UserController {
         this.userServices = userServices;
     }
 
-    public RequestEntity<?> registerUser() {
-
-    }
+//    public RequestEntity<?> registerUser() {
+//
+//    }
 }

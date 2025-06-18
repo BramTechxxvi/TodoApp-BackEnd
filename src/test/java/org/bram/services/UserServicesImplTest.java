@@ -179,7 +179,6 @@ class UserServicesImplTest {
         assertEquals("User not found", error.getMessage());
     }
 
-
     private void registerUser() {
         registerRequest.setFirstName("Grace");
         registerRequest.setLastName("Ayoola");
