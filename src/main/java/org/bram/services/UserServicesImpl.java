@@ -92,7 +92,12 @@ public class UserServicesImpl implements UserServices {
 
     @Override
     public UserLogoutResponse logout(UserLogoutRequest request) {
-        return null;
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(()-> new UserNotFoundException("User not found"));
+
+        if(!user.isLoggedIn()) throw new UserNotLoggedInException("User is not logged in");
+
+        user.setLoggedIn(false);
     }
 
     private void verifyNewEmail(String email) {
