@@ -5,6 +5,7 @@ import org.bram.data.models.Task;
 import org.bram.dtos.requests.*;
 import org.bram.dtos.response.*;
 import org.bram.services.TaskServices;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -21,9 +22,13 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<CreateTaskResponse> createTask(@RequestBody @Valid CreateTaskRequest createTaskRequest) {
-        CreateTaskResponse response = taskServices.createTask(createTaskRequest);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> createTask(@RequestBody @Valid CreateTaskRequest createTaskRequest) {
+        try {
+            CreateTaskResponse response = taskServices.createTask(createTaskRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch(Exception e) {
+            return ResponseEntity.badRequest().body("Failed to create task" + e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")

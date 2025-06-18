@@ -100,7 +100,7 @@ public class UserServicesImpl implements UserServices {
         userRepository.save(user);
 
         UserLogoutResponse response = new UserLogoutResponse();
-        response.setMessage("We hope to see you again");
+        response.setMessage("We hope to see you soon");
 
         return response;
     }

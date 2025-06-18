@@ -167,7 +167,8 @@ class UserServicesImplTest {
         User user = userRepository.findById(loginResponse.getUserId()).orElseThrow();
         logoutRequest.setUserId(user.getId());
         logoutResponse = userServices.logout(logoutRequest);
-        assertFalse(user.isLoggedIn());
+        User loggedOutUser = userRepository.findById(user.getId()).orElseThrow();
+        assertFalse(loggedOutUser.isLoggedIn());
         assertEquals("We hope to see you soon", logoutResponse.getMessage());
     }
 
@@ -175,8 +176,8 @@ class UserServicesImplTest {
     public void logoutUserNotLoggedIn__throwsException() {
         userCanLogout__logoutTest();
         logoutRequest.setUserId(loginResponse.getUserId());
-        Exception error = assertThrows(UserNotFoundException.class, ()-> userServices.logout(logoutRequest));
-        assertEquals("User not found", error.getMessage());
+        Exception error = assertThrows(UserNotLoggedInException.class, ()-> userServices.logout(logoutRequest));
+        assertEquals("User is not logged in", error.getMessage());
     }
 
     private void registerUser() {
