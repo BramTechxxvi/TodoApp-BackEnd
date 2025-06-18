@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping ("/tasks")
-@CrossOrigin(origins = "*" , methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+//@CrossOrigin(origins = "*" , methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class TaskController {
 
     private TaskServices taskServices;

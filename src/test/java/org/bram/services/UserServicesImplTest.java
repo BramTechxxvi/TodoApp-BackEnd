@@ -1,5 +1,6 @@
 package org.bram.services;
 
+import org.bram.data.models.User;
 import org.bram.data.repositories.UserRepository;
 import org.bram.dtos.requests.*;
 import org.bram.dtos.response.*;
@@ -28,6 +29,8 @@ class UserServicesImplTest {
     private ChangePasswordResponse changePasswordResponse;
     private ChangeEmailResponse changeEmailResponse;
     private ChangeEmailRequest changeEmailRequest;
+    private UserLogoutRequest logoutRequest;
+    private UserLogoutResponse logoutResponse;
 
 
     @BeforeEach
@@ -41,12 +44,16 @@ class UserServicesImplTest {
         changePasswordResponse = new ChangePasswordResponse();
         changeEmailResponse = new ChangeEmailResponse();
         changeEmailRequest = new ChangeEmailRequest();
+        logoutRequest = new UserLogoutRequest();
+        logoutResponse = new UserLogoutResponse();
     }
 
     @Test
     public void registerUserTest() {
         registerUser();
-        assertNotNull(registerResponse.getUserId());
+        User user = userRepository.findById(registerResponse.getUserId()).orElseThrow();
+        assertNotNull(user.getId());
+        assertFalse(user.isLoggedIn());
         assertEquals("Registration Successful", registerResponse.getMessage());
         assertEquals(1, userRepository.count());
     }
@@ -69,6 +76,9 @@ class UserServicesImplTest {
         loginRequest.setEmail("grace@ayoola.com");
         loginRequest.setPassword("123456");
         loginResponse = userServices.login(loginRequest);
+        User user = userRepository.findById(loginResponse.getUserId()).orElseThrow();
+        assertNotNull(user.getId());
+        assertTrue(user.isLoggedIn());
         assertEquals("Welcome back Grace Ayoola", loginResponse.getMessage());
     }
 
@@ -130,15 +140,15 @@ class UserServicesImplTest {
         assertEquals("Email changed successfully", changeEmailResponse.getMessage());
     }
 
-//    @Test
-//    public void changeEmailWithWrongOldEmail__throwsException() {
-//        loginAUser__loginTest();
-//        changeEmailRequest.setUserId(loginResponse.getUserId());
-//        changeEmailRequest.setOldEmail("grace@ayoola.com");
-//        changeEmailRequest.setNewEmail("graceAyoola@yahoo.com");
-//        Exception error = assertThrows(IncorrectOldEmailException.class, ()-> userServices.changeEmail(changeEmailRequest));
-//        assertEquals("Old email not correct", error.getMessage());
-//    }
+    @Test
+    public void changeEmailWithWrongOldEmail__throwsException() {
+        loginAUser__loginTest();
+        changeEmailRequest.setUserId(loginResponse.getUserId());
+        changeEmailRequest.setOldEmail("ayoola@ayoola.com");
+        changeEmailRequest.setNewEmail("graceAyoola@yahoo.com");
+        Exception error = assertThrows(IncorrectOldEmailException.class, ()-> userServices.changeEmail(changeEmailRequest));
+        assertEquals("Old email not correct", error.getMessage());
+    }
 
     @Test
     public void changeEmailWithSameOldEmail__throwsException() {
@@ -152,7 +162,22 @@ class UserServicesImplTest {
     }
 
     @Test
-    public void userCanLogout__logoutTest() {}
+    public void userCanLogout__logoutTest() {
+        loginAUser__loginTest();
+        User user = userRepository.findById(loginResponse.getUserId()).orElseThrow();
+        logoutRequest.setUserId(user.getId());
+        logoutResponse = userServices.logout(logoutRequest);
+        assertFalse(user.isLoggedIn());
+        assertEquals("We hope to see you soon", logoutResponse.getMessage());
+    }
+
+    @Test
+    public void logoutUserNotLoggedIn__throwsException() {
+        userCanLogout__logoutTest();
+        logoutRequest.setUserId(loginResponse.getUserId());
+        Exception error = assertThrows(UserNotFoundException.class, ()-> userServices.logout(logoutRequest));
+        assertEquals("User not found", error.getMessage());
+    }
 
 
     private void registerUser() {

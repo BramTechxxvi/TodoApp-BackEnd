@@ -13,6 +13,7 @@ public class Mapper {
         user.setFirstName(request.getFirstName().trim());
         user.setLastName(request.getLastName().trim());
         user.setEmail(request.getEmail().trim());
+        user.setLoggedIn(false);
         user.setPassword(hashPassword(request.getPassword().trim()));
 
         return user;

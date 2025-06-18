@@ -41,6 +41,8 @@ public class UserServicesImpl implements UserServices {
         boolean passwordMatches = verifyPassword(loginRequest.getPassword(), user.getPassword());
         if (!passwordMatches) throw new InvalidCredentialsException("Invalid credentials");
 
+        user.setLoggedIn(true);
+        userRepository.save(user);
         LoginResponse loginResponse = new LoginResponse();
         String fullName = user.getFirstName() + " " + user.getLastName();
         loginResponse.setUserId(user.getId());
