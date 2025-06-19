@@ -31,5 +31,4 @@ class TaskRepositoryTest {
         assertNotNull(savedTask.getId());
         assertEquals(1, taskRepository.count());
     }
-
 }
