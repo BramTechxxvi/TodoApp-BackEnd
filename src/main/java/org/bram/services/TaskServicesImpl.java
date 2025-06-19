@@ -118,6 +118,4 @@ public class TaskServicesImpl implements TaskServices {
         markResponse.setSuccess(true);
         return markResponse;
     }
-
-
 }
