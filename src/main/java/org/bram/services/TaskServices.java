@@ -8,17 +8,12 @@ import java.util.List;
 
 public interface TaskServices {
 
-
-
     CreateTaskResponse createTask(CreateTaskRequest request);
     UpdateTaskResponse updateTask(UpdateTaskRequest request);
     List<Task> getAllTasks();
     DeleteTaskResponse deleteTask(DeleteTaskRequest request);
-
     FindTaskResponse getTaskById(FindTaskRequest findTasKRequest);
-
     MarkTaskAsCompletedResponse markTaskAsCompleted(MarkTaskAsCompletedRequest request);
-
     MarkTaskAsInProgressResponse markTaskAsInProgress(MarkTaskAsInProgressRequest request);
 
 }
