@@ -13,7 +13,7 @@ public class CreateTaskRequest {
 
     @Id
     private String id;
-    @NotBlank
+    @NotBlank(message = "Enter task title")
     private String title;
     @NotBlank
     private String description;

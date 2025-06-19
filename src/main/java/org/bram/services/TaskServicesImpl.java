@@ -23,7 +23,7 @@ public class TaskServicesImpl implements TaskServices {
     @Override
     public CreateTaskResponse createTask(CreateTaskRequest request) {
         Task newTask = new Task();
-        newTask.setTitle(request.getTitle().trim());
+        newTask.setTitle(request.getTitle());
         newTask.setDescription(request.getDescription());
         newTask.setCreatedAt(LocalDateTime.now());
         newTask.setStatus(TaskStatus.PENDING);
@@ -33,6 +33,7 @@ public class TaskServicesImpl implements TaskServices {
         createTaskResponse.setTaskId(savedTask.getId());
         createTaskResponse.setTitle(savedTask.getTitle());
         createTaskResponse.setCreatedAt(savedTask.getCreatedAt());
+        createTaskResponse.setSuccess(true);
         createTaskResponse.setMessage("Created successfully");
 
         return createTaskResponse;
@@ -41,10 +42,11 @@ public class TaskServicesImpl implements TaskServices {
     @Override
     public UpdateTaskResponse updateTask(UpdateTaskRequest request) {
         Optional<Task> existingTask = taskRepository.findById(request.getTaskId());
-        if (existingTask.isEmpty()) throw new RuntimeException("Task not found");
+        if (existingTask.isEmpty()) throw new TaskNotFoundException("Task not found");
 
         Task taskToUpdate = existingTask.get();
-        if (!request.getTitle().trim().isEmpty()) taskToUpdate.setTitle(request.getTitle().trim());
+        boolean validTitle = request.getTitle() != null && !request.getTitle().trim().isEmpty();
+        if (validTitle) taskToUpdate.setTitle(request.getTitle().trim());
         taskToUpdate.setDescription(request.getDescription());
         taskToUpdate.setUpdatedAt(LocalDateTime.now());
 
@@ -54,6 +56,7 @@ public class TaskServicesImpl implements TaskServices {
         updateTaskResponse.setMessage("Updated successfully");
         updateTaskResponse.setUpdatedAt(updatedTask.getUpdatedAt());
         updateTaskResponse.setStatus(updatedTask.getStatus());
+        updateTaskResponse.setSuccess(true);
 
         return updateTaskResponse;
     }
@@ -67,33 +70,37 @@ public class TaskServicesImpl implements TaskServices {
     public DeleteTaskResponse deleteTask(DeleteTaskRequest request) {
         Optional<Task> task = taskRepository.findById(request.getId());
         if(task.isEmpty()) throw new TaskNotFoundException("Task not found");
+
         taskRepository.deleteById(request.getId());
         DeleteTaskResponse response = new DeleteTaskResponse();
+        response.setSuccess(true);
         response.setMessage("Deleted successfully");
         return response;
     }
 
     @Override
-    public FindTasKResponse getTaskById(FindTasKRequest findTasKRequest) {
+    public FindTaskResponse getTaskById(FindTaskRequest findTasKRequest) {
         Optional<Task> task = taskRepository.findById(findTasKRequest.getTaskId());
-        if (task.isEmpty()) throw new RuntimeException("Task not found");
+        if (task.isEmpty()) throw new TaskNotFoundException("Task not found");
 
-        FindTasKResponse findTasKResponse = new FindTasKResponse();
+        FindTaskResponse findTasKResponse = new FindTaskResponse();
         findTasKResponse.setTask(task.get());
+        findTasKResponse.setSuccess(true);
         return findTasKResponse;
     }
 
     @Override
     public MarkTaskAsCompletedResponse markTaskAsCompleted(MarkTaskAsCompletedRequest request) {
         Optional<Task> task = taskRepository.findById(request.getTaskId());
-        if (task.isEmpty()) throw new RuntimeException("Task not found");
+        if (task.isEmpty()) throw new TaskNotFoundException("Task not found");
 
         Task newTask = task.get();
         newTask.setStatus(TaskStatus.COMPLETED);
         taskRepository.save(newTask);
 
         MarkTaskAsCompletedResponse markTaskAsCompletedResponse = new MarkTaskAsCompletedResponse();
-        markTaskAsCompletedResponse.setMessage("Success");
+        markTaskAsCompletedResponse.setMessage("Marked as completed");
+        markTaskAsCompletedResponse.setSuccess(true);
         return markTaskAsCompletedResponse;
     }
 
@@ -107,7 +114,8 @@ public class TaskServicesImpl implements TaskServices {
         taskRepository.save(newTask);
 
         MarkTaskAsInProgressResponse markResponse = new MarkTaskAsInProgressResponse();
-        markResponse.setMessage("Success");
+        markResponse.setMessage("Marked as in progress");
+        markResponse.setSuccess(true);
         return markResponse;
     }
 

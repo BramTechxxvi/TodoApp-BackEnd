@@ -6,4 +6,5 @@ import lombok.Data;
 public class ChangeEmailResponse {
 
     private String message;
+    private boolean success;
 }

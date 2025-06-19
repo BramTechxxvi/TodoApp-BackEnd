@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 @Data
-public class FindTasKRequest {
+public class FindTaskRequest {
     @Id
     private String taskId;
 }

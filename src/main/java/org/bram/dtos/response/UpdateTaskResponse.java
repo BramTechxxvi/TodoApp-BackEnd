@@ -14,4 +14,5 @@ public class UpdateTaskResponse {
     private LocalDateTime updatedAt;
     private  String message;
     private TaskStatus status;
+    private boolean success;
 }

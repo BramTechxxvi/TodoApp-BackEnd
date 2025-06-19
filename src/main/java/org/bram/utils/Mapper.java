@@ -12,7 +12,7 @@ public class Mapper {
         User user = new User();
         user.setFirstName(request.getFirstName().trim());
         user.setLastName(request.getLastName().trim());
-        user.setEmail(request.getEmail().trim());
+        user.setEmail(request.getEmail().trim().toLowerCase());
         user.setLoggedIn(false);
         user.setPassword(hashPassword(request.getPassword().trim()));
 
@@ -24,6 +24,7 @@ public class Mapper {
         response.setUserId(user.getId());
         String fullName = user.getFirstName() + " " + user.getLastName();
         response.setFullName(fullName);
+        response.setSuccess(true);
         response.setMessage("Registration Successful");
 
         return response;

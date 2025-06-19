@@ -10,4 +10,5 @@ public class RegisterUserResponse {
     private String userId;
     private String fullName;
     private String message;
+    private boolean success;
 }

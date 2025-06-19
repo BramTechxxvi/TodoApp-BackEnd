@@ -15,7 +15,7 @@ public interface TaskServices {
     List<Task> getAllTasks();
     DeleteTaskResponse deleteTask(DeleteTaskRequest request);
 
-    FindTasKResponse getTaskById(FindTasKRequest findTasKRequest);
+    FindTaskResponse getTaskById(FindTaskRequest findTasKRequest);
 
     MarkTaskAsCompletedResponse markTaskAsCompleted(MarkTaskAsCompletedRequest request);
 

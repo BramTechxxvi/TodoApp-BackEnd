@@ -180,6 +180,26 @@ class UserServicesImplTest {
         assertEquals("User is not logged in", error.getMessage());
     }
 
+    @Test
+    public void changePasswordWhenNotLoggedIn__throwsException() {
+        userCanLogout__logoutTest();
+        changePasswordRequest.setUserId(loginResponse.getUserId());
+        changePasswordRequest.setOldPassword("graceAyoola@gmail.com");
+        changePasswordRequest.setNewPassword("olaiwola@gmail.com");
+        Exception errorResponse = assertThrows(UserNotLoggedInException.class, ()-> userServices.changePassword(changePasswordRequest));
+        assertEquals("User is not logged in", errorResponse.getMessage());
+    }
+
+    @Test
+    public void changeEmailWhenNotLoggedIn__throwsException() {
+        userCanLogout__logoutTest();
+        changeEmailRequest.setUserId(loginResponse.getUserId());
+        changeEmailRequest.setOldEmail("graceAyoola@gmail.com");
+        changeEmailRequest.setNewEmail("olaiwola@gmail.com");
+        Exception errorResponse = assertThrows(UserNotLoggedInException.class, ()-> userServices.changeEmail(changeEmailRequest));
+        assertEquals("User is not logged in", errorResponse.getMessage());
+    }
+
     private void registerUser() {
         registerRequest.setFirstName("Grace");
         registerRequest.setLastName("Ayoola");

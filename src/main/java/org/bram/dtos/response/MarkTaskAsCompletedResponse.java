@@ -6,4 +6,5 @@ import lombok.Data;
 public class MarkTaskAsCompletedResponse {
 
     private String message;
+    private boolean success;
 }

@@ -5,6 +5,7 @@ import org.bram.data.repositories.UserRepository;
 import org.bram.dtos.requests.*;
 import org.bram.dtos.response.*;
 import org.bram.exceptions.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -17,6 +18,7 @@ import static org.bram.utils.PasswordUtil.*;
 @Service
 public class UserServicesImpl implements UserServices {
 
+    @Autowired
     private UserRepository userRepository;
 
     public UserServicesImpl(UserRepository userRepository) {
@@ -46,6 +48,7 @@ public class UserServicesImpl implements UserServices {
         String fullName = user.getFirstName() + " " + user.getLastName();
         loginResponse.setUserId(user.getId());
         loginResponse.setMessage("Welcome back " + fullName);
+        loginResponse.setSuccess(true);
 
         return loginResponse;
     }
@@ -55,6 +58,7 @@ public class UserServicesImpl implements UserServices {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(()-> new UserNotFoundException("User not found"));
 
+        if(!user.isLoggedIn()) throw new UserNotLoggedInException("User is not logged in");
         boolean isSamePassword = request.getNewPassword().equals(request.getOldPassword());
         if (isSamePassword) throw new SamePasswordException("New password cannot be the same as the old password");
 
@@ -65,6 +69,7 @@ public class UserServicesImpl implements UserServices {
         userRepository.save(user);
         ChangePasswordResponse response = new ChangePasswordResponse();
         response.setMessage("Password changed successfully");
+        response.setSuccess(true);
 
         return response;
     }
@@ -74,7 +79,9 @@ public class UserServicesImpl implements UserServices {
         Optional<User> optionalUser = userRepository.findById(request.getUserId());
         if (optionalUser.isEmpty()) throw new UserNotFoundException("User not found");
 
-        User user = optionalUser.get();
+        var user = optionalUser.get();
+
+        if(!user.isLoggedIn()) throw new UserNotLoggedInException("User is not logged in");
         boolean isSameEmail = request.getNewEmail().equals(request.getOldEmail());
         if (isSameEmail) throw new SameEmailException("New email cannot be same as old email");
 
@@ -86,6 +93,7 @@ public class UserServicesImpl implements UserServices {
 
         ChangeEmailResponse response = new ChangeEmailResponse();
         response.setMessage("Email changed successfully");
+        response.setSuccess(true);
 
         return response;
     }
@@ -101,7 +109,7 @@ public class UserServicesImpl implements UserServices {
 
         UserLogoutResponse response = new UserLogoutResponse();
         response.setMessage("We hope to see you soon");
-
+        response.setSuccess(true);
         return response;
     }
 

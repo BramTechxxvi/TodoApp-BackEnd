@@ -6,4 +6,5 @@ import lombok.Data;
 public class DeleteTaskResponse {
 
     private String message;
+    private boolean success;
 }

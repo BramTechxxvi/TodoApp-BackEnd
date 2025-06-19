@@ -7,4 +7,5 @@ import lombok.Data;
 public class MarkTaskAsInProgressResponse {
 
     private String message;
+    private boolean success;
 }
