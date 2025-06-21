@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
+
 @Service
 public class EmailService {
 
@@ -15,6 +17,11 @@ public class EmailService {
     }
 
     public String generateToken() {
-        String alphabets = "ABCDEFG"
+        String alphabets = "ABCDEFGHIJKLMOPQRSTUVWXYZabcdefghijklmopqrstuvwxyz";
+        String numbers = "0123456789";
+        String symbols = "@!><#%&*=?-";
+
+        SecureRandom random = new vSecureRandom();
+        for
     }
 }
