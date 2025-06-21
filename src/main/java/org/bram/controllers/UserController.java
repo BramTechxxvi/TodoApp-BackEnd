@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.bram.dtos.requests.*;
 import org.bram.dtos.response.*;
 import org.bram.exceptions.*;
+import org.bram.services.EmailService;
 import org.bram.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,17 +16,22 @@ import org.springframework.web.bind.annotation.*;
 //@CrossOrigin("*")
 public class UserController {
 
-    @Autowired
-    private UserServices userServices;
 
-    public UserController(UserServices userServices) {
+    private final UserServices userServices;
+    private final EmailService emailService;
+
+    @Autowired
+    public UserController(UserServices userServices, EmailService emailService) {
         this.userServices = userServices;
+        this.emailService = emailService;
     }
 
     @PostMapping("/register")
     public ResponseEntity<RegisterUserResponse> registerUser(@RequestBody @Valid RegisterUserRequest request) {
         try {
             RegisterUserResponse response = userServices.registerUser(request);
+            String token = emailService.generateToken();
+            emailService.sendVerificationEmail(request.getEmail(), token);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
         } catch(DetailsAlreadyInUseException e) {

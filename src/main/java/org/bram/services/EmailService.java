@@ -1,6 +1,7 @@
 package org.bram.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class EmailService {
 
         SecureRandom random = new SecureRandom();
         for (int count = 0; count < 6; count++) {
-            tokenBuilder.append(characters.charAt(random.nextInt(alphabets.length())));
+            tokenBuilder.append(characters.charAt(random.nextInt(characters.length())));
         } return tokenBuilder.toString();
     }
 
