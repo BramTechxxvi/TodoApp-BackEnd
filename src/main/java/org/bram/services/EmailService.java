@@ -21,10 +21,13 @@ public class EmailService {
         String numbers = "0123456789";
         String symbols = "@!><#%&*=?-";
         String characters = alphabets + numbers + symbols;
+        StringBuilder tokenBuilder = new StringBuilder();;
 
         SecureRandom random = new SecureRandom();
         for (int count = 0; count < 6; count++) {
-            char randomChar = characters.charAt(random.nextInt(alphabets.length()));
-        }
+            tokenBuilder.append(characters.charAt(random.nextInt(alphabets.length())));
+        } return tokenBuilder.toString();
     }
+
+
 }
