@@ -10,7 +10,7 @@ import java.security.SecureRandom;
 @Service
 public class EmailService {
 
-    @Value("")
+    @Value("${app.url}")
     private String appUrl;
 
     private final JavaMailSender mailSender;
@@ -35,7 +35,7 @@ public class EmailService {
 
     public void sendVerificationEmail(String receiver, String token) {
         String subject = "Email verification";
-        String verificationUrl = "http://localhost:8080/verify?token=" + token;
+        String verificationUrl = appUrl + "/verify?token=" + token;
         String emailContent = "Kindlu click the link below to verify your email address\n" + verificationUrl;
 
         SimpleMailMessage message = new SimpleMailMessage();
