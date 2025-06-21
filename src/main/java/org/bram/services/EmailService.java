@@ -1,6 +1,7 @@
 package org.bram.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,10 @@ public class EmailService {
 
     public void sendVerificationEmail(String receiver, String token) {
         String subject = "Email verification";
-        String verificationUrl = "http://localhost:8080/verify?token=";
+        String verificationUrl = "http://localhost:8080/verify?token=" + token;
+        String emailContent = "Kindlu click the link below to verify your email address\n" + verificationUrl;
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setSubject(subject);
     }
 }
