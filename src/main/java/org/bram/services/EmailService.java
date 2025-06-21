@@ -29,5 +29,8 @@ public class EmailService {
         } return tokenBuilder.toString();
     }
 
-
+    public void sendVerificationEmail(String receiver, String token) {
+        String subject = "Email verification";
+        String verificationUrl = "http://localhost:8080/verify?token=";
+    }
 }
