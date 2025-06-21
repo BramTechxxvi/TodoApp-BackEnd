@@ -7,4 +7,8 @@ import org.springframework.stereotype.Service;
 public class EmailService {
 
     private JavaMailSender mailSender;
+
+    public EmailService(JavaMailSendet mailsernder) {
+
+    }
 }
