@@ -37,5 +37,11 @@ public class EmailService {
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setSubject(subject);
+        message.setFrom("niceibrahim01@gmail.com");
+        message.setTo(receiver);
+        message.setText(emailContent);
+
+        mailSender.send(message);
+        System.out.println()
     }
 }
