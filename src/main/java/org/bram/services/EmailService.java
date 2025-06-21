@@ -20,8 +20,11 @@ public class EmailService {
         String alphabets = "ABCDEFGHIJKLMOPQRSTUVWXYZabcdefghijklmopqrstuvwxyz";
         String numbers = "0123456789";
         String symbols = "@!><#%&*=?-";
+        String characters = alphabets + numbers + symbols;
 
-        SecureRandom random = new vSecureRandom();
-        for (in c)
+        SecureRandom random = new SecureRandom();
+        for (int count = 0; count < 6; count++) {
+            char randomChar = characters.charAt(random.nextInt(alphabets.length()));
+        }
     }
 }
