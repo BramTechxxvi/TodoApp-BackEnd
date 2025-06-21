@@ -13,4 +13,8 @@ public class EmailService {
     public EmailService(JavaMailSender javaMailsender) {
         this.mailSender = javaMailsender;
     }
+
+    public String generateToken() {
+        String alphabets = "ABCDEFG"
+    }
 }
