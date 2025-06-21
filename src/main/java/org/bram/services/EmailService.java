@@ -1,14 +1,17 @@
 package org.bram.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
 
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
-    public EmailService(JavaMailSendet mailsernder) {
+    @Autowired
+    public EmailService(JavaMailSender javaMailsender) {
+        this.mailSender = javaMailsender;
 
     }
 }
