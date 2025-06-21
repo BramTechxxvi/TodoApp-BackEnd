@@ -10,6 +10,9 @@ import java.security.SecureRandom;
 @Service
 public class EmailService {
 
+    @Value("")
+    private String appUrl;
+
     private final JavaMailSender mailSender;
 
     @Autowired
@@ -42,6 +45,6 @@ public class EmailService {
         message.setText(emailContent);
 
         mailSender.send(message);
-        System.out.println()
+        System.out.println("Email verification link sent to: " +receiver);
     }
 }
