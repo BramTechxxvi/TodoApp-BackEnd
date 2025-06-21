@@ -22,6 +22,6 @@ public class EmailService {
         String symbols = "@!><#%&*=?-";
 
         SecureRandom random = new vSecureRandom();
-        for
+        for (in c)
     }
 }
