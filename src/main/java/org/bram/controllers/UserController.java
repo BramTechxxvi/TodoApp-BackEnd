@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 //@CrossOrigin("*")
 public class UserController {
 
-
     private final UserServices userServices;
     private final EmailService emailService;
 
