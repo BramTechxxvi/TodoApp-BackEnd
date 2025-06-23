@@ -6,6 +6,7 @@ import org.bram.dtos.response.*;
 public interface UserServices {
 
     RegisterUserResponse registerUser(RegisterUserRequest request);
+
     LoginResponse login(LoginRequest loginRequest);
     ChangePasswordResponse changePassword(ChangePasswordRequest request);
     ChangeEmailResponse changeEmail(ChangeEmailRequest request);
