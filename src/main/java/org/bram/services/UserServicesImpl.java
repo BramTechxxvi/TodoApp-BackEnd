@@ -18,9 +18,9 @@ import static org.bram.utils.PasswordUtil.*;
 @Service
 public class UserServicesImpl implements UserServices {
 
-    @Autowired
     private UserRepository userRepository;
 
+    @Autowired
     public UserServicesImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

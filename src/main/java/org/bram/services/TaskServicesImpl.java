@@ -6,6 +6,7 @@ import org.bram.data.repositories.TaskRepository;
 import org.bram.dtos.requests.*;
 import org.bram.dtos.response.*;
 import org.bram.exceptions.TaskNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ public class TaskServicesImpl implements TaskServices {
 
     private TaskRepository taskRepository;
 
+    @Autowired
     public TaskServicesImpl(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
