@@ -158,7 +158,6 @@ class UserServicesImplTest {
         changeEmailRequest.setNewEmail("graceAyoola@gmail.com");
         Exception error = assertThrows(SameEmailException.class, ()-> userServices.changeEmail(changeEmailRequest));
         assertEquals("New email cannot be same as old email", error.getMessage());
-
     }
 
     @Test
