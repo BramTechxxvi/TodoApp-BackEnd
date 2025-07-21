@@ -37,7 +37,7 @@ public class EmailService {
     public void sendVerificationEmail(String receiver, String token) {
         String subject = "Email verification";
         String verificationUrl = appUrl + "/verify?token=" + token;
-        String emailContent = "Kindlu click the link below to verify your email address\n" + verificationUrl;
+        String emailContent = "Kindly click the link below to verify your email address\n" + verificationUrl;
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setSubject(subject);
