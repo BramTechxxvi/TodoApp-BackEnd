@@ -5,7 +5,7 @@ import org.bram.data.models.Task;
 import org.bram.dtos.requests.*;
 import org.bram.dtos.response.*;
 import org.bram.exceptions.TaskNotFoundException;
-import org.bram.services.TaskServices;
+import org.bram.services.TaskServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +14,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping ("/tasks")
-//@CrossOrigin(origins = "*")
 public class TaskController {
 
-    @Autowired
-    private TaskServices taskServices;
+    private final TaskServicesImpl taskServices;
 
-    public TaskController(TaskServices taskServices) {
+    @Autowired
+    public TaskController(TaskServicesImpl taskServices) {
         this.taskServices = taskServices;
     }
 
