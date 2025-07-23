@@ -14,6 +14,7 @@ public class CreateTaskResponse {
     private String title;
     @DateTimeFormat(pattern = "yyy-MMM-dd HH:mm")
     private LocalDateTime createdAt;
+    private TaskStatus status;
     private String message;
     private boolean success;
 
