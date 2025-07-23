@@ -35,6 +35,7 @@ public class TaskServicesImpl implements TaskServices {
         createTaskResponse.setTaskId(savedTask.getId());
         createTaskResponse.setTitle(savedTask.getTitle());
         createTaskResponse.setCreatedAt(savedTask.getCreatedAt());
+        createTaskResponse.setStatus(savedTask.getStatus());
         createTaskResponse.setSuccess(true);
         createTaskResponse.setMessage("Created successfully");
 
