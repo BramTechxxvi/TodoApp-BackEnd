@@ -12,6 +12,7 @@ public class Task {
 
     @Id
     private String id;
+    private String userId;
     private String title;
     private String description;
     private TaskStatus status = TaskStatus.PENDING;

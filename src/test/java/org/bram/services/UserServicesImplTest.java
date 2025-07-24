@@ -206,6 +206,4 @@ class UserServicesImplTest {
         registerRequest.setPassword("123456");
         registerResponse = userServices.registerUser(registerRequest);
     }
-
-
 }
