@@ -2,7 +2,9 @@ package org.bram.services;
 
 import org.bram.data.models.Task;
 import org.bram.data.models.TaskStatus;
+import org.bram.data.models.User;
 import org.bram.data.repositories.TaskRepository;
+import org.bram.data.repositories.UserRepository;
 import org.bram.dtos.requests.*;
 import org.bram.dtos.response.*;
 import org.bram.exceptions.TaskNotFoundException;
@@ -17,14 +19,19 @@ import java.util.Optional;
 public class TaskServicesImpl implements TaskServices {
 
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public TaskServicesImpl(TaskRepository taskRepository) {
+    public TaskServicesImpl(TaskRepository taskRepository, UserRepository userRepository) {
+        this.userRepository = userRepository;
         this.taskRepository = taskRepository;
     }
     @Override
     public CreateTaskResponse createTask(CreateTaskRequest request) {
         Task newTask = new Task();
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        newTask.setUser(user);
         newTask.setTitle(request.getTitle());
         newTask.setDescription(request.getDescription());
         newTask.setCreatedAt(LocalDateTime.now());
@@ -54,7 +61,6 @@ public class TaskServicesImpl implements TaskServices {
         taskToUpdate.setUpdatedAt(LocalDateTime.now());
 
         Task updatedTask = taskRepository.save(taskToUpdate);
-
         UpdateTaskResponse updateTaskResponse = new UpdateTaskResponse();
         updateTaskResponse.setMessage("Updated successfully");
         updateTaskResponse.setUpdatedAt(updatedTask.getUpdatedAt());
@@ -65,8 +71,11 @@ public class TaskServicesImpl implements TaskServices {
     }
 
     @Override
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    public List<Task> getAllTasks(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return taskRepository.findAllByUser(user);
     }
 
     @Override

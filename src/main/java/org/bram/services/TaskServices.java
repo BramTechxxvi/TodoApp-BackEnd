@@ -10,7 +10,7 @@ public interface TaskServices {
 
     CreateTaskResponse createTask(CreateTaskRequest request);
     UpdateTaskResponse updateTask(UpdateTaskRequest request);
-    List<Task> getAllTasks();
+    List<Task> getAllTasks(String userId);
     DeleteTaskResponse deleteTask(DeleteTaskRequest request);
     FindTaskResponse getTaskById(FindTaskRequest findTasKRequest);
     MarkTaskAsCompletedResponse markTaskAsCompleted(MarkTaskAsCompletedRequest request);

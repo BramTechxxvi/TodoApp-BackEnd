@@ -68,7 +68,7 @@ class TaskServicesImplTest {
         assertEquals(1, taskRepository.count());
 
         Task savedTask = taskRepository.findById(createTaskResponse.getTaskId()).orElseThrow();
-        assertEquals(user.getId(), savedTask.get);
+        assertEquals(user.getId(), savedTask.getUser().getId());
     }
 
     @Test
