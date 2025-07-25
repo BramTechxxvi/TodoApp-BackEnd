@@ -74,7 +74,6 @@ public class TaskServicesImpl implements TaskServices {
     public List<Task> getAllTasks(String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
         return taskRepository.findAllByUser(user);
     }
 

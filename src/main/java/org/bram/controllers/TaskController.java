@@ -64,9 +64,9 @@ public class TaskController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<Task>> getTasks() {
-        return ResponseEntity.status(HttpStatus.OK).body(taskServices.getAllTasks());
+    @GetMapping("/getAll/{id}")
+    public ResponseEntity<List<Task>> getAllUserTasks(@PathVariable("id") String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(taskServices.getAllTasks(id));
     }
 
     @DeleteMapping("/delete/{id}")

@@ -8,12 +8,9 @@ import org.bram.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.util.Optional;
-
 import static org.bram.utils.Mapper.*;
 import static org.bram.utils.PasswordUtil.*;
-
 
 @Service
 public class UserServicesImpl implements UserServices {

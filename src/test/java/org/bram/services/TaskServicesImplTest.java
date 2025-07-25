@@ -83,15 +83,16 @@ class TaskServicesImplTest {
 
     @Test
     public void deleteTaskTest() {
-        createTaskTest();
+        User user = registerUserAndLogin();
         CreateTaskRequest secondCreateTaskRequest = new CreateTaskRequest();
         secondCreateTaskRequest.setTitle("Electronics");
         secondCreateTaskRequest.setDescription("I am to get groceries on thursday evening");
-        taskServices.createTask(secondCreateTaskRequest);
+        secondCreateTaskRequest.setUserId(user.getId());
+        CreateTaskResponse response = taskServices.createTask(secondCreateTaskRequest);
         DeleteTaskRequest deleteTaskRequest = new DeleteTaskRequest();
-        deleteTaskRequest.setId(createTaskResponse.getTaskId());
+        deleteTaskRequest.setId(response.getTaskId());
         taskServices.deleteTask(deleteTaskRequest);
-        assertEquals(1, taskRepository.count());
+        assertEquals(0, taskRepository.count());
     }
 
     @Test
@@ -121,6 +122,7 @@ class TaskServicesImplTest {
         registerRequest.setFirstName("Grace");
         registerRequest.setLastName("Ayoola");
         registerRequest.setEmail("grace@ayoola.com");
+        registerRequest.setPassword("123456");
         registerUserResponse = userServices.registerUser(registerRequest);
         assertEquals("Registration Successful", registerUserResponse.getMessage());
 
