@@ -86,18 +86,18 @@ public class TaskController {
 
     @GetMapping("/getTask/{id}")
     public ResponseEntity<FindTaskResponse> getTaskById(@PathVariable("id") String id, @RequestBody FindTaskRequest request) {
-       try {
-           request.setTaskId(id);
-           FindTaskResponse response = taskServices.getTaskById(request);
-           return ResponseEntity.status(HttpStatus.OK).body(response);
+        try {
+            request.setTaskId(id);
+            FindTaskResponse response = taskServices.getTaskById(request);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
 
-       } catch (TaskNotFoundException e) {
-           FindTaskResponse response = new FindTaskResponse();
-           response.setSuccess(false);
-           response.setMessage(e.getMessage());
-           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-       }
-}
+        } catch (TaskNotFoundException e) {
+            FindTaskResponse response = new FindTaskResponse();
+            response.setSuccess(false);
+            response.setMessage(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
 
     @PatchMapping("/{id}/complete")
     public ResponseEntity<MarkTaskAsCompletedResponse> markTaskAsCompleted(@PathVariable("id") String id, @RequestBody MarkTaskAsCompletedRequest request) {
