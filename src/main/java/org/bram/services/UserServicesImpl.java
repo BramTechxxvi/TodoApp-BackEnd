@@ -57,7 +57,7 @@ public class UserServicesImpl implements UserServices {
 
         user.setPassword(hashPassword(request.getNewPassword()));
         userRepository.save(user);
-        return new ChangePasswordResponse("Password changed successfully", true)
+        return new ChangePasswordResponse("Password changed successfully", true);
     }
 
     @Override
@@ -66,22 +66,16 @@ public class UserServicesImpl implements UserServices {
         if (optionalUser.isEmpty()) throw new UserNotFoundException("User not found");
 
         var user = optionalUser.get();
-
         if(!user.isLoggedIn()) throw new UserNotLoggedInException("User is not logged in");
         boolean isSameEmail = request.getNewEmail().equals(request.getOldEmail());
-        if (isSameEmail) throw new SameEmailException("New email cannot be same as old email");
 
+        if (isSameEmail) throw new SameEmailException("New email cannot be same as old email");
         boolean isOldEmail = request.getOldEmail().equals(user.getEmail());
         if(!isOldEmail) throw new IncorrectOldEmailException("Old email not correct");
 
         user.setEmail(request.getNewEmail());
         userRepository.save(user);
-
-        ChangeEmailResponse response = new ChangeEmailResponse();
-        response.setMessage("Email changed successfully");
-        response.setSuccess(true);
-
-        return response;
+        return new ChangeEmailResponse("Email changed successfully", true);
     }
 
     @Override
