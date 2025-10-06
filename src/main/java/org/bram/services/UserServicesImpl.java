@@ -35,12 +35,12 @@ public class UserServicesImpl implements UserServices {
     public LoginResponse login(LoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(()-> new InvalidCredentialsException("Invalid credentials"));
-
         boolean passwordMatches = verifyPassword(loginRequest.getPassword(), user.getPassword());
+
         if (!passwordMatches) throw new InvalidCredentialsException("Invalid credentials");
         user.setLoggedIn(true);
-
         userRepository.save(user);
+
         String fullName = user.getFirstName() + " " + user.getLastName();
         return new LoginResponse(user.getId(), "Welcome " + fullName, true);
     }
@@ -54,8 +54,8 @@ public class UserServicesImpl implements UserServices {
 
         boolean isCorrect = verifyPassword(request.getOldPassword(), user.getPassword());
         if (!isCorrect) throw new IncorrectOldPasswordException("Old password not correct");
-
         user.setPassword(hashPassword(request.getNewPassword()));
+
         userRepository.save(user);
         return new ChangePasswordResponse("Password changed successfully", true);
     }
@@ -64,16 +64,16 @@ public class UserServicesImpl implements UserServices {
     public ChangeEmailResponse changeEmail(ChangeEmailRequest request) {
         Optional<User> optionalUser = userRepository.findById(request.getUserId());
         if (optionalUser.isEmpty()) throw new UserNotFoundException("User not found");
-
         var user = optionalUser.get();
+
         if(!user.isLoggedIn()) throw new UserNotLoggedInException("User is not logged in");
         boolean isSameEmail = request.getNewEmail().equals(request.getOldEmail());
-
         if (isSameEmail) throw new SameEmailException("New email cannot be same as old email");
+
         boolean isOldEmail = request.getOldEmail().equals(user.getEmail());
         if(!isOldEmail) throw new IncorrectOldEmailException("Old email not correct");
-
         user.setEmail(request.getNewEmail());
+
         userRepository.save(user);
         return new ChangeEmailResponse("Email changed successfully", true);
     }
@@ -83,12 +83,9 @@ public class UserServicesImpl implements UserServices {
         User user = findUser(request.getUserId());
         if(!user.isLoggedIn()) throw new UserNotLoggedInException("User is not logged in");
         user.setLoggedIn(false);
-        userRepository.save(user);
 
-        UserLogoutResponse response = new UserLogoutResponse();
-        response.setMessage("We hope to see you soon");
-        response.setSuccess(true);
-        return response;
+        userRepository.save(user);
+        return new UserLogoutResponse("We hope to see you soon", true);
     }
 
     private void verifyNewEmail(String email) {
