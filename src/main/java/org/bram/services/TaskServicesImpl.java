@@ -33,15 +33,9 @@ public class TaskServicesImpl implements TaskServices {
         Task task = map(user, request);
 
         Task savedTask = taskRepository.save(task);
-        CreateTaskResponse createTaskResponse = new CreateTaskResponse();
-        createTaskResponse.setTaskId(savedTask.getId());
-        createTaskResponse.setTitle(savedTask.getTitle());
-        createTaskResponse.setCreatedAt(savedTask.getCreatedAt());
-        createTaskResponse.setStatus(savedTask.getStatus());
-        createTaskResponse.setSuccess(true);
-        createTaskResponse.setMessage("Created successfully");
-
-        return createTaskResponse;
+        return new CreateTaskResponse(
+                task.getTitle(), task.getCreatedAt(), task.getStatus(),
+                "Created successfully", true);
     }
 
     @Override
