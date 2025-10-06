@@ -1,4 +1,4 @@
-package org.bram.utils;
+package org.bram.utils.Mapper;
 
 import org.bram.data.models.User;
 import org.bram.dtos.requests.RegisterUserRequest;
@@ -6,7 +6,7 @@ import org.bram.dtos.response.RegisterUserResponse;
 
 import static org.bram.utils.PasswordUtil.hashPassword;
 
-public class Mapper {
+public class AuthMapper {
 
     public static User map(RegisterUserRequest request) {
         User user = new User();

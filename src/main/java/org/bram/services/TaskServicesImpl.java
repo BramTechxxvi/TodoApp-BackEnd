@@ -27,9 +27,9 @@ public class TaskServicesImpl implements TaskServices {
     }
     @Override
     public CreateTaskResponse createTask(CreateTaskRequest request) {
+        User user = findUser(request.getUserId());
+        Task task = map(user, request);
         Task newTask = new Task();
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
         newTask.setUser(user);
         newTask.setTitle(request.getTitle());
         newTask.setDescription(request.getDescription());
@@ -127,5 +127,9 @@ public class TaskServicesImpl implements TaskServices {
         markResponse.setMessage("Marked as in progress");
         markResponse.setSuccess(true);
         return markResponse;
+    }
+
+    private User findUser(String id) {
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
