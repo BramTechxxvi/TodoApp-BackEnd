@@ -57,11 +57,7 @@ public class UserServicesImpl implements UserServices {
 
         user.setPassword(hashPassword(request.getNewPassword()));
         userRepository.save(user);
-        ChangePasswordResponse response = new ChangePasswordResponse();
-        response.setMessage("Password changed successfully");
-        response.setSuccess(true);
-
-        return response;
+        return new ChangePasswordResponse("Password changed successfully", true)
     }
 
     @Override
