@@ -29,6 +29,24 @@ public class TaskController {
             CreateTaskResponse response = taskServices.createTask(createTaskRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
+            public ResponseEntity<CreateTaskResponse> createTask(
+                    @RequestBody CreateTaskRequest request,
+                    @RequestHeader(value = "X-User-Id", required = false) String userId) {
+
+                if (userId == null) {
+                    userId = "66f987bd71f6c9123456789a"; // fallback to default user
+                }
+                request.setUserId(userId);
+                return ResponseEntity.ok(taskService.createTask(request));
+            }
+
+
+
+
+
+
+
+
         } catch (IllegalArgumentException e) {
             CreateTaskResponse response = new CreateTaskResponse();
             response.setMessage("Invalid input " + e.getMessage());

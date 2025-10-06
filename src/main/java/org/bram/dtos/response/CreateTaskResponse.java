@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class CreateTaskResponse {
 
-    @Id
     private String taskId;
     private String title;
     @DateTimeFormat(pattern = "yyy-MMM-dd HH:mm")

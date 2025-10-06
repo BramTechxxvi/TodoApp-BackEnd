@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 @Data
 public class CreateTaskRequest {
 
-    @Id
-    private String id;
     private String userId;
     @NotBlank(message = "Enter task title")
     private String title;
