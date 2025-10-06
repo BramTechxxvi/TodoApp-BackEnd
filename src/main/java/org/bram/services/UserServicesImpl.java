@@ -41,6 +41,8 @@ public class UserServicesImpl implements UserServices {
 
         user.setLoggedIn(true);
         userRepository.save(user);
+
+        return new LoginResponse(user.getId(), "Welcome " + fullName, true);
         LoginResponse loginResponse = new LoginResponse();
         String fullName = user.getFirstName() + " " + user.getLastName();
         loginResponse.setUserId(user.getId());
@@ -48,6 +50,7 @@ public class UserServicesImpl implements UserServices {
         loginResponse.setSuccess(true);
 
         return loginResponse;
+
     }
 
     @Override
