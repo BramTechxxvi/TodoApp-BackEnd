@@ -28,19 +28,11 @@ public class TaskController {
             @RequestBody @Valid CreateTaskRequest createTaskRequest,
             @RequestHeader(value ="X-User-Id", required = false) String userId) {
         try {
-            CreateTaskResponse response = taskServices.createTask(createTaskRequest);
+
+            CreateTaskResponse response = new CreateTaskResponse();
+            response.setTaskId(userId);
+            response = taskServices.createTask(createTaskRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
-
-                request.setUserId(userId);
-                return ResponseEntity.ok(taskService.createTask(request));
-            }
-
-
-
-
-
-
-
 
         } catch (IllegalArgumentException e) {
             CreateTaskResponse response = new CreateTaskResponse();
