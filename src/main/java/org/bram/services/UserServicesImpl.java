@@ -26,8 +26,8 @@ public class UserServicesImpl implements UserServices {
     public RegisterUserResponse registerUser(RegisterUserRequest request) {
         verifyNewEmail(request.getEmail());
         User user = map(request);
-
         User savedUser = userRepository.save(user);
+
         return map(savedUser);
     }
 
@@ -52,9 +52,7 @@ public class UserServicesImpl implements UserServices {
 
     @Override
     public ChangePasswordResponse changePassword(ChangePasswordRequest request) {
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(()-> new UserNotFoundException("User not found"));
-
+        User user = findUser(request.getUserId());
         if(!user.isLoggedIn()) throw new UserNotLoggedInException("User is not logged in");
         boolean isSamePassword = request.getNewPassword().equals(request.getOldPassword());
         if (isSamePassword) throw new SamePasswordException("New password cannot be the same as the old password");
@@ -97,9 +95,7 @@ public class UserServicesImpl implements UserServices {
 
     @Override
     public UserLogoutResponse logout(UserLogoutRequest request) {
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(()-> new UserNotFoundException("User not found"));
-
+        User user = findUser(request.getUserId());
         if(!user.isLoggedIn()) throw new UserNotLoggedInException("User is not logged in");
         user.setLoggedIn(false);
         userRepository.save(user);
