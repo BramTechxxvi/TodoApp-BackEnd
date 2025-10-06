@@ -20,15 +20,7 @@ public class Mapper {
     }
 
     public static RegisterUserResponse map(User user) {
-        RegisterUserResponse response = new RegisterUserResponse();
-        response.setUserId(user.getId());
         String fullName = user.getFirstName() + " " + user.getLastName();
-        response.setFullName(fullName);
-        response.setSuccess(true);
-        response.setMessage("Registration Successful");
-
-        return response;
+        return new RegisterUserResponse(user.getId(), fullName, "Registration Successful", true);
     }
-
-    public static LoginReponse
 }
