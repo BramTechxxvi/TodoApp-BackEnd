@@ -113,4 +113,9 @@ public class UserServicesImpl implements UserServices {
     private void verifyNewEmail(String email) {
         if (userRepository.existsByEmail(email)) throw new DetailsAlreadyInUseException("Email already exists");
     }
+
+    private User findUser(String id) {
+        return userRepository.findById(id)
+                .orElseThrow(()-> new UserNotFoundException("User not found"));
+    }
 }
