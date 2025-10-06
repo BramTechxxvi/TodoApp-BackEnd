@@ -24,18 +24,13 @@ public class TaskController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<CreateTaskResponse> createTask(@RequestBody @Valid CreateTaskRequest createTaskRequest) {
+    public ResponseEntity<CreateTaskResponse> createTask(
+            @RequestBody @Valid CreateTaskRequest createTaskRequest,
+            @RequestHeader(value ="X-User-Id", required = false) String userId) {
         try {
             CreateTaskResponse response = taskServices.createTask(createTaskRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
-            public ResponseEntity<CreateTaskResponse> createTask(
-                    @RequestBody CreateTaskRequest request,
-                    @RequestHeader(value = "X-User-Id", required = false) String userId) {
-
-                if (userId == null) {
-                    userId = "66f987bd71f6c9123456789a"; // fallback to default user
-                }
                 request.setUserId(userId);
                 return ResponseEntity.ok(taskService.createTask(request));
             }
