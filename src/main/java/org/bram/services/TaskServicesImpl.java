@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static org.bram.utils.Mapper.TaskMapper.map;
+
 @Service
 public class TaskServicesImpl implements TaskServices {
 
@@ -29,14 +31,8 @@ public class TaskServicesImpl implements TaskServices {
     public CreateTaskResponse createTask(CreateTaskRequest request) {
         User user = findUser(request.getUserId());
         Task task = map(user, request);
-        Task newTask = new Task();
-        newTask.setUser(user);
-        newTask.setTitle(request.getTitle());
-        newTask.setDescription(request.getDescription());
-        newTask.setCreatedAt(LocalDateTime.now());
-        newTask.setStatus(TaskStatus.PENDING);
 
-        Task savedTask = taskRepository.save(newTask);
+        Task savedTask = taskRepository.save(task);
         CreateTaskResponse createTaskResponse = new CreateTaskResponse();
         createTaskResponse.setTaskId(savedTask.getId());
         createTaskResponse.setTitle(savedTask.getTitle());
