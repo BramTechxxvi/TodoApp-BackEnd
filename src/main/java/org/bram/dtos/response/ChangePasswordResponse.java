@@ -1,9 +1,12 @@
 package org.bram.dtos.response;
 
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Setter
+@Getter
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class ChangePasswordResponse {
 
     private String message;
